@@ -18,11 +18,10 @@ import { getRowsNum, getColsNum } from "utils/helpers/grid.helpers";
 
 import { clearCellVisually } from "utils/helpers/cell.helpers";
 
-// si puo diegnare mura anche quando griglia esplorata
-
 // milgiorare codice per sscegliere il numero di righe e colonne
 // migliorare transizione quando le dimensioni della grid cambiano
 
+// si puo diegnare mura anche quando griglia esplorata ???
 // far cominciare gli algoritmi maze dalla cella iniziale e non da quella in alto a sinistra ????
 
 // dijkstra e a-star: usare priority queue
@@ -31,7 +30,7 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { width, height } = useWindowDimensions(); // they get updated even when resizing window
+  const { width, height } = useWindowDimensions(); // they get updated even when the window is resized
   const activeTimeouts = useRef([]);
 
   const grid = useSelector((state) => state.grid.grid);
@@ -69,7 +68,7 @@ const App = () => {
     return [visitedCellsInOrder, path];
   };
 
-  const handleScreenResize = (width, height) => {
+  const handleScreenResize = () => {
     const newRowsNum = getRowsNum(height);
     const newColsNum = getColsNum(width);
 
@@ -90,7 +89,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    handleScreenResize(width, height);
+    handleScreenResize();
   }, [width, height]);
 
   return (
