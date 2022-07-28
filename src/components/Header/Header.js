@@ -9,30 +9,19 @@ import PathDropdown from "components/Header/PathAlgorithms/PathDropdown";
 import MazeDropdown from "components/Header/MazeAlgorithms/MazeDropdown";
 import InstrumentDropdown from "components/Header/InstrumentDropdown";
 
-import { clearCellVisually } from "utils/helpers/cell.helpers";
-
-const Header = () => {
+const Header = ({ clearExplorationGraphic }) => {
   const dispatch = useDispatch();
-  const grid = useSelector((state) => state.grid.grid);
   const blockClick = useSelector((state) => state.interactions.blockClick);
 
   const handleClearGrid = () => {
-    clearPathGraphic();
+    clearExplorationGraphic();
     dispatch(setIsGridExplored(false));
     dispatch(clearGridWallsAndWeights());
   };
 
   const handleClearExploration = () => {
-    clearPathGraphic();
+    clearExplorationGraphic();
     dispatch(setIsGridExplored(false));
-  };
-
-  const clearPathGraphic = () => {
-    for (let row of grid) {
-      for (let cell of row) {
-        clearCellVisually(cell);
-      }
-    }
   };
 
   return (

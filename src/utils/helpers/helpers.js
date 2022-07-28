@@ -1,5 +1,3 @@
-import { isStart } from "utils/helpers/cell.helpers";
-
 export const getCoordsObject = (row, col) => {
   return {
     row: row,

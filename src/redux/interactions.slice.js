@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  algorithmId: null,
   instrumentId: 1,
   blockClick: false,
   isMovingStart: false,
@@ -14,6 +15,9 @@ export const interactionsSlice = createSlice({
   name: "interactions",
   initialState,
   reducers: {
+    setAlgorithmId: (state, action) => {
+      state.algorithmId = action.payload;
+    },
     setInstrumentId: (state, action) => {
       state.instrumentId = action.payload;
     },
@@ -39,6 +43,7 @@ export const interactionsSlice = createSlice({
 });
 
 export const {
+  setAlgorithmId,
   setInstrumentId,
   setBlockClick,
   setIsMovingStart,

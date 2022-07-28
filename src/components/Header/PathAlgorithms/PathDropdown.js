@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Dropdown, NavLink, NavItem } from "react-bootstrap";
 
-import { setAlgorithmId } from "redux/algorithm.slice";
+import { setAlgorithmId } from "redux/interactions.slice";
 
 const PathDropdown = () => {
   const dispatch = useDispatch();

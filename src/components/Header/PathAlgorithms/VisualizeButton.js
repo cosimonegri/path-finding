@@ -24,10 +24,10 @@ import {
 
 const VisualizeButton = () => {
   const dispatch = useDispatch();
-  const algorithmId = useSelector((state) => state.algorithm.id);
   const grid = useSelector((state) => state.grid.grid);
   const startCoords = useSelector((state) => state.grid.startCoords);
   const endCoords = useSelector((state) => state.grid.endCoords);
+  const algorithmId = useSelector((state) => state.interactions.algorithmId);
   const blockClick = useSelector((state) => state.interactions.blockClick);
 
   const getButtonName = (id) => {

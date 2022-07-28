@@ -149,6 +149,8 @@ export const getValidLeftRightNeighbors = (cell, grid) => {
   return neighbors;
 };
 
+//! do these functions create problems? is it possibile to optimize them?
+
 // The cell must have ROW and COL props
 export const makeVisitedVisually = (cell) => {
   document.getElementById(
