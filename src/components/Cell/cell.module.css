@@ -1,0 +1,116 @@
+@import "utils/constants/constants.css";
+
+.cell {
+  background-color: white;
+  outline: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start {
+  height: var(--start-end-size);
+  width: var(--start-end-size);
+}
+
+.end {
+  height: var(--start-end-size);
+  width: var(--start-end-size);
+}
+
+.wall {
+  background-color: var(--wall-color);
+  outline: 1px solid var(--wall-color);
+  animation-name: mainAnimation;
+  animation-duration: var(--wall-animation-duration);
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.weight {
+  height: var(--weight-size);
+  width: var(--weight-size);
+  animation-name: mainAnimation;
+  animation-duration: var(--weight-animation-duration);
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes mainAnimation {
+  0% {
+    transform: scale(0.2);
+  }
+
+  75% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.visited {
+  animation-name: visitedAnimation;
+  animation-duration: var(--visited-animation-duration);
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    border-radius: 100%;
+    background-color: var(--visited-initial-color);
+    outline: 1px solid var(--border-visited-color);
+  }
+
+  75% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: var(--visited-final-color);
+    outline: 1px solid var(--border-visited-color);
+  }
+}
+
+.path {
+  background-color: var(--path-color);
+  outline: 1px solid var(--path-color);
+  animation-name: pathAnimation;
+  animation-duration: var(--path-animation-duration);
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes pathAnimation {
+  0% {
+    transform: scale(0.6);
+  }
+
+  75% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

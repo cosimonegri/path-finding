@@ -1,0 +1,11 @@
+@import "utils/constants/constants.css";
+
+.grid-row {
+  max-width: calc(var(--cell-size-with-outline) * var(--cols-num));
+  margin: 12px auto auto auto;
+
+  display: grid;
+  grid-template-columns: repeat(var(--cols-num), var(--cell-size));
+  grid-template-rows: repeat(var(--rows-num), var(--cell-size));
+  gap: 1px;
+}
