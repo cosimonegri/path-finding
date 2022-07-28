@@ -4,15 +4,11 @@ import { Dropdown, NavLink, NavItem } from "react-bootstrap";
 
 import { setInstrumentId } from "redux/interactions.slice";
 
+import { INSTRUMENTS } from "utils/constants/ids.constants";
+
 const InstrumentDropdown = () => {
   const dispatch = useDispatch();
   const instrumentId = useSelector((state) => state.interactions.instrumentId);
-
-  const INSTRUMENTS = {
-    1: "Wall",
-    2: "Weight Cell",
-    3: "Clear",
-  };
 
   return (
     <Dropdown className="mx-2" as={NavItem}>

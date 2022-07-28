@@ -9,7 +9,7 @@ import PathDropdown from "components/Header/PathAlgorithms/PathDropdown";
 import MazeDropdown from "components/Header/MazeAlgorithms/MazeDropdown";
 import InstrumentDropdown from "components/Header/InstrumentDropdown";
 
-const Header = ({ clearExplorationGraphic }) => {
+const Header = ({ clearExplorationGraphic, getExplorationData }) => {
   const dispatch = useDispatch();
   const blockClick = useSelector((state) => state.interactions.blockClick);
 
@@ -31,7 +31,10 @@ const Header = ({ clearExplorationGraphic }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
-            <VisualizeButton />
+            <VisualizeButton
+              getExplorationData={getExplorationData}
+              clearExploration={handleClearExploration}
+            />
             <PathDropdown />
             <MazeDropdown
               clearGrid={handleClearGrid}

@@ -8,18 +8,7 @@ import {
   makeWeight,
   clearCell,
 } from "redux/grid.slice";
-import {
-  setIsMovingStart,
-  setIsMovingEnd,
-  setIsCreatingWall,
-  setIsCreatingWeight,
-  setIsClearing,
-} from "redux/interactions.slice";
-
-import dijkstra from "algorithms/path/dijkstra";
-import aStar from "algorithms/path/aStar";
-import bfs from "algorithms/path/bfs";
-import dfs from "algorithms/path/dfs";
+import { makeHandling, resetIsHandling } from "redux/interactions.slice";
 
 import { isStart, isEnd, haveSameCoords } from "utils/helpers/cell.helpers";
 import {
@@ -31,7 +20,7 @@ import { getCoordsObject } from "utils/helpers/helpers";
 import Cell from "components/Cell/Cell";
 import styles from "components/Grid/grid.module.css";
 
-const Grid = ({ clearExplorationGraphic }) => {
+const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   const dispatch = useDispatch();
 
   const grid = useSelector((state) => state.grid.grid);
@@ -39,31 +28,20 @@ const Grid = ({ clearExplorationGraphic }) => {
   const endCoords = useSelector((state) => state.grid.endCoords);
   const isGridExplored = useSelector((state) => state.grid.isExplored);
 
-  const algorithmId = useSelector((state) => state.interactions.algorithmId);
   const instrumentId = useSelector((state) => state.interactions.instrumentId);
   const blockClick = useSelector((state) => state.interactions.blockClick);
-  const isMovingStart = useSelector(
-    (state) => state.interactions.isMovingStart
-  );
-  const isMovingEnd = useSelector((state) => state.interactions.isMovingEnd);
-  const isCreatingWall = useSelector(
-    (state) => state.interactions.isCreatingWall
-  );
-  const isCreatingWeight = useSelector(
-    (state) => state.interactions.isCreatingWeight
-  );
-  const isClearing = useSelector((state) => state.interactions.isClearing);
+  const isHandling = useSelector((state) => state.interactions.isHandling);
 
   const handleMouseDown = (event, cell) => {
     if (event.button !== 0) return; //! only the left click counts
     if (blockClick) return;
 
     if (isStart(cell, startCoords)) {
-      dispatch(setIsMovingStart(true));
+      dispatch(makeHandling("start"));
       return;
     }
     if (isEnd(cell, endCoords)) {
-      dispatch(setIsMovingEnd(true));
+      dispatch(makeHandling("end"));
       return;
     }
 
@@ -71,39 +49,26 @@ const Grid = ({ clearExplorationGraphic }) => {
 
     switch (instrumentId) {
       case 1:
-        dispatch(setIsCreatingWall(true));
+        dispatch(makeHandling("wall"));
         dispatch(makeWall(cell));
         break;
       case 2:
-        dispatch(setIsCreatingWeight(true));
+        dispatch(makeHandling("weight"));
         dispatch(makeWeight(cell));
         break;
       case 3:
-        dispatch(setIsClearing(true));
+        dispatch(makeHandling("clear"));
         dispatch(clearCell(cell));
         break;
     }
   };
 
   const handleStartEndMouseUp = () => {
-    if (isMovingStart) {
-      dispatch(setIsMovingStart(false));
-    }
-    if (isMovingEnd) {
-      dispatch(setIsMovingEnd(false));
-    }
+    dispatch(resetIsHandling(["start", "end"]));
   };
 
   const handleMouseUp = () => {
-    if (isCreatingWall) {
-      dispatch(setIsCreatingWall(false));
-    }
-    if (isCreatingWeight) {
-      dispatch(setIsCreatingWeight(false));
-    }
-    if (isClearing) {
-      dispatch(setIsClearing(false));
-    }
+    dispatch(resetIsHandling(["wall", "weight", "clear"]));
   };
 
   useEffect(() => {
@@ -112,7 +77,7 @@ const Grid = ({ clearExplorationGraphic }) => {
   }, []);
 
   const handleMouseEnter = (cell) => {
-    if (isMovingStart) {
+    if (isHandling.start) {
       let newStartCoords = startCoords;
       if (!haveSameCoords(cell, endCoords)) {
         dispatch(moveStart(cell));
@@ -124,7 +89,7 @@ const Grid = ({ clearExplorationGraphic }) => {
       return;
     }
 
-    if (isMovingEnd) {
+    if (isHandling.end) {
       let newEndCoords = endCoords;
       if (!haveSameCoords(cell, startCoords)) {
         dispatch(moveEnd(cell));
@@ -136,29 +101,22 @@ const Grid = ({ clearExplorationGraphic }) => {
       return;
     }
 
-    if (isCreatingWall) {
+    if (isHandling.wall) {
       dispatch(makeWall(cell));
-    } else if (isCreatingWeight) {
+    } else if (isHandling.weight) {
       dispatch(makeWeight(cell));
-    } else if (isClearing) {
+    } else if (isHandling.clear) {
       dispatch(clearCell(cell));
     }
   };
 
-  const recalculatePath = (startCoords, endCoords) => {
+  const recalculatePath = (newStartCoords, newEndCoords) => {
     clearExplorationGraphic();
-    let visitedCellsInOrder;
-    let path;
 
-    if (algorithmId === 1) {
-      [visitedCellsInOrder, path] = dijkstra(grid, startCoords, endCoords);
-    } else if (algorithmId === 2) {
-      [visitedCellsInOrder, path] = aStar(grid, startCoords, endCoords);
-    } else if (algorithmId === 3) {
-      [visitedCellsInOrder, path] = bfs(grid, startCoords, endCoords);
-    } else if (algorithmId === 4) {
-      [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
-    }
+    const [visitedCellsInOrder, path] = getExplorationData(
+      newStartCoords,
+      newEndCoords
+    );
 
     instantSearch(visitedCellsInOrder);
     instantPath(path);

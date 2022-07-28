@@ -1,14 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getInitialIsHandling = () => {
+  return {
+    start: false,
+    end: false,
+    wall: false,
+    weight: false,
+    clear: false,
+  };
+};
+
 const initialState = {
   algorithmId: null,
   instrumentId: 1,
   blockClick: false,
-  isMovingStart: false,
-  isMovingEnd: false,
-  isCreatingWall: false,
-  isCreatingWeight: false,
-  isClearing: false,
+  isHandling: getInitialIsHandling(),
 };
 
 export const interactionsSlice = createSlice({
@@ -24,20 +30,13 @@ export const interactionsSlice = createSlice({
     setBlockClick: (state, action) => {
       state.blockClick = action.payload;
     },
-    setIsMovingStart: (state, action) => {
-      state.isMovingStart = action.payload;
+    makeHandling: (state, action) => {
+      state.isHandling[action.payload] = true;
     },
-    setIsMovingEnd: (state, action) => {
-      state.isMovingEnd = action.payload;
-    },
-    setIsCreatingWall: (state, action) => {
-      state.isCreatingWall = action.payload;
-    },
-    setIsCreatingWeight: (state, action) => {
-      state.isCreatingWeight = action.payload;
-    },
-    setIsClearing: (state, action) => {
-      state.isClearing = action.payload;
+    resetIsHandling: (state, action) => {
+      for (let instrument of action.payload) {
+        state.isHandling[instrument] = false;
+      }
     },
   },
 });
@@ -46,11 +45,8 @@ export const {
   setAlgorithmId,
   setInstrumentId,
   setBlockClick,
-  setIsMovingStart,
-  setIsMovingEnd,
-  setIsCreatingWall,
-  setIsCreatingWeight,
-  setIsClearing,
+  makeHandling,
+  resetIsHandling,
 } = interactionsSlice.actions;
 
 export default interactionsSlice.reducer;

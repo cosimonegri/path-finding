@@ -4,14 +4,16 @@ import { useSelector } from "react-redux";
 import Header from "components/Header/Header";
 import Grid from "components/Grid/Grid";
 
+import dijkstra from "algorithms/path/dijkstra";
+import aStar from "algorithms/path/aStar";
+import bfs from "algorithms/path/bfs";
+import dfs from "algorithms/path/dfs";
+
 import { clearCellVisually } from "utils/helpers/cell.helpers";
 
-// sistemare recalculate path
-
-// anche se grid explored, quando clicco su visualize algorithm azzera e fa vedere animazione
+// si puo diegnare mura anche quando griglia esplorata
 
 // far cominciare gli algoritmi maze dalla cella iniziale e non da quella in alto a sinistra ????
-// aggiungere reset coords in grid.slice  ????
 
 // GRID CON DIMENSIONE VARIABILE
 
@@ -21,6 +23,7 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 
 const App = () => {
   const grid = useSelector((state) => state.grid.grid);
+  const algorithmId = useSelector((state) => state.interactions.algorithmId);
 
   const clearExplorationGraphic = () => {
     for (let row of grid) {
@@ -30,10 +33,38 @@ const App = () => {
     }
   };
 
+  const getExplorationData = (startCoords, endCoords) => {
+    let visitedCellsInOrder;
+    let path;
+
+    switch (algorithmId) {
+      case 1:
+        [visitedCellsInOrder, path] = dijkstra(grid, startCoords, endCoords);
+        break;
+      case 2:
+        [visitedCellsInOrder, path] = aStar(grid, startCoords, endCoords);
+        break;
+      case 3:
+        [visitedCellsInOrder, path] = bfs(grid, startCoords, endCoords);
+        break;
+      case 4:
+        [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
+        break;
+    }
+
+    return [visitedCellsInOrder, path];
+  };
+
   return (
     <>
-      <Header clearExplorationGraphic={clearExplorationGraphic} />
-      <Grid clearExplorationGraphic={clearExplorationGraphic} />
+      <Header
+        clearExplorationGraphic={clearExplorationGraphic}
+        getExplorationData={getExplorationData}
+      />
+      <Grid
+        clearExplorationGraphic={clearExplorationGraphic}
+        getExplorationData={getExplorationData}
+      />
     </>
   );
 };

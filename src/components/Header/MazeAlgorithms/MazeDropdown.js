@@ -12,6 +12,7 @@ import recursiveBacktracking from "algorithms/maze/recursiveBacktracking";
 import kruskal from "algorithms/maze/kruskal";
 import prim from "algorithms/maze/prim";
 
+import { MAZE_ALGORITHMS } from "utils/constants/ids.constants";
 import {
   MAKE_MAZE_SPEED,
   WALL_ANIMATION_DURATION,
@@ -20,13 +21,6 @@ import {
 const MazeDropdown = ({ clearGrid, clearExploration }) => {
   const dispatch = useDispatch();
   const grid = useSelector((state) => state.grid.grid);
-
-  const MAZES = {
-    1: "Recursive Division",
-    2: "Recursive Backtracking",
-    3: "Kruskal's Algorithm",
-    4: "Prim's Algorithm",
-  };
 
   const mazeAlgorithmDoesCreateWalls = (mazeId) => {
     return mazeId === 1;
@@ -89,22 +83,22 @@ const MazeDropdown = ({ clearGrid, clearExploration }) => {
       <Dropdown.Menu variant="dark">
         <MazeButton
           mazeId={1}
-          mazeName={MAZES[1]}
+          mazeName={MAZE_ALGORITHMS[1]}
           startMaze={(mazeId) => handleStartMaze(mazeId)}
         />
         <MazeButton
           mazeId={2}
-          mazeName={MAZES[2]}
+          mazeName={MAZE_ALGORITHMS[2]}
           startMaze={(mazeId) => handleStartMaze(mazeId)}
         />
         <MazeButton
           mazeId={3}
-          mazeName={MAZES[3]}
+          mazeName={MAZE_ALGORITHMS[3]}
           startMaze={(mazeId) => handleStartMaze(mazeId)}
         />
         <MazeButton
           mazeId={4}
-          mazeName={MAZES[4]}
+          mazeName={MAZE_ALGORITHMS[4]}
           startMaze={(mazeId) => handleStartMaze(mazeId)}
         />
       </Dropdown.Menu>

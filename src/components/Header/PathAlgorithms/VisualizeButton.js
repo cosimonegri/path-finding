@@ -4,12 +4,6 @@ import { Nav } from "react-bootstrap";
 
 import { setIsGridExplored } from "redux/grid.slice";
 import { setBlockClick } from "redux/interactions.slice";
-
-import dijkstra from "algorithms/path/dijkstra";
-import aStar from "algorithms/path/aStar";
-import bfs from "algorithms/path/bfs";
-import dfs from "algorithms/path/dfs";
-
 import {
   makeVisitedVisually,
   makePathVisually,
@@ -22,7 +16,7 @@ import {
   PATH_ANIMATION_DURATION,
 } from "utils/constants/times.constants";
 
-const VisualizeButton = () => {
+const VisualizeButton = ({ getExplorationData, clearExploration }) => {
   const dispatch = useDispatch();
   const grid = useSelector((state) => state.grid.grid);
   const startCoords = useSelector((state) => state.grid.startCoords);
@@ -57,19 +51,13 @@ const VisualizeButton = () => {
       return;
     }
 
+    clearExploration();
     dispatch(setBlockClick(true));
-    let visitedCellsInOrder;
-    let path;
 
-    if (algorithmId === 1) {
-      [visitedCellsInOrder, path] = dijkstra(grid, startCoords, endCoords);
-    } else if (algorithmId === 2) {
-      [visitedCellsInOrder, path] = aStar(grid, startCoords, endCoords);
-    } else if (algorithmId === 3) {
-      [visitedCellsInOrder, path] = bfs(grid, startCoords, endCoords);
-    } else if (algorithmId === 4) {
-      [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
-    }
+    const [visitedCellsInOrder, path] = getExplorationData(
+      startCoords,
+      endCoords
+    );
 
     animateSearch(visitedCellsInOrder, path);
   };
