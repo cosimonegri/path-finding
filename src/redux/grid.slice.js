@@ -1,21 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { GRID_ROWS_NUM, GRID_COLS_NUM } from "utils/constants/constants";
-import {
-  START_ROW,
-  START_COL,
-  END_ROW,
-  END_COL,
-} from "utils/constants/constants";
 import { createInitialGrid } from "utils/helpers/grid.helpers";
 import { getCoordsObject } from "utils/helpers/helpers";
 
 const initialState = {
-  grid: createInitialGrid(GRID_ROWS_NUM, GRID_COLS_NUM),
-  rowsNum: GRID_ROWS_NUM,
-  colsNum: GRID_COLS_NUM,
-  startCoords: getCoordsObject(START_ROW, START_COL),
-  endCoords: getCoordsObject(END_ROW, END_COL),
+  grid: [],
+  rowsNum: 0,
+  colsNum: 0,
+  startCoords: null,
+  endCoords: null,
   isExplored: false,
 };
 
@@ -62,13 +55,22 @@ export const gridSlice = createSlice({
         }
       }
     },
-    changeDimensions: (state, action) => {
+    changeGridDimensions: (state, action) => {
       const { rowsNum, colsNum } = action.payload;
       state.rowsNum = rowsNum;
       state.colsNum = colsNum;
       state.grid = createInitialGrid(rowsNum, colsNum);
 
-      //! set START and END coords
+      const row = Math.floor(rowsNum / 2);
+      let startCol = Math.floor(colsNum / 4);
+      if (startCol % 2 !== 0) {
+        // so that they are not in walls when creating a maze
+        startCol = startCol - 1;
+      }
+      const endCol = colsNum - startCol - 1;
+
+      state.startCoords = getCoordsObject(row, startCol);
+      state.endCoords = getCoordsObject(row, endCol);
     },
     setIsGridExplored: (state, action) => {
       state.isExplored = action.payload;
@@ -84,7 +86,7 @@ export const {
   clearCell,
   clearGridWallsAndWeights,
   coverGridWithWalls,
-  changeDimensions,
+  changeGridDimensions,
   setIsGridExplored,
 } = gridSlice.actions;
 

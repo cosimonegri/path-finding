@@ -9,7 +9,11 @@ import PathDropdown from "components/Header/PathAlgorithms/PathDropdown";
 import MazeDropdown from "components/Header/MazeAlgorithms/MazeDropdown";
 import InstrumentDropdown from "components/Header/InstrumentDropdown";
 
-const Header = ({ clearExplorationGraphic, getExplorationData }) => {
+const Header = ({
+  clearExplorationGraphic,
+  getExplorationData,
+  activeTimeouts,
+}) => {
   const dispatch = useDispatch();
   const blockClick = useSelector((state) => state.interactions.blockClick);
 
@@ -34,11 +38,13 @@ const Header = ({ clearExplorationGraphic, getExplorationData }) => {
             <VisualizeButton
               getExplorationData={getExplorationData}
               clearExploration={handleClearExploration}
+              activeTimeouts={activeTimeouts}
             />
             <PathDropdown />
             <MazeDropdown
               clearGrid={handleClearGrid}
               clearExploration={handleClearExploration}
+              activeTimeouts={activeTimeouts}
             />
             <Nav.Link
               className="mx-2"

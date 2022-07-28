@@ -18,7 +18,7 @@ import {
   WALL_ANIMATION_DURATION,
 } from "utils/constants/times.constants";
 
-const MazeDropdown = ({ clearGrid, clearExploration }) => {
+const MazeDropdown = ({ clearGrid, clearExploration, activeTimeouts }) => {
   const dispatch = useDispatch();
   const grid = useSelector((state) => state.grid.grid);
 
@@ -53,28 +53,32 @@ const MazeDropdown = ({ clearGrid, clearExploration }) => {
 
   const animateMazeWalls = (wallCellsInOrder) => {
     for (let [i, cell] of wallCellsInOrder.entries()) {
-      setTimeout(() => {
+      let timeout = setTimeout(() => {
         dispatch(makeWall(cell));
       }, MAKE_MAZE_SPEED * i);
+      activeTimeouts.current.push(timeout);
     }
 
-    setTimeout(() => {
+    let timeout = setTimeout(() => {
       dispatch(setBlockClick(false));
     }, MAKE_MAZE_SPEED * wallCellsInOrder.length + WALL_ANIMATION_DURATION);
+    activeTimeouts.current.push(timeout);
   };
 
   const animateMazePassages = (passageCellsInOrder) => {
     const delay = 400; //! because it lags a bit when covering the grid with walls. Try to solve it
 
     for (let [i, cell] of passageCellsInOrder.entries()) {
-      setTimeout(() => {
+      let timeout = setTimeout(() => {
         dispatch(clearCell(cell));
       }, MAKE_MAZE_SPEED * i + delay);
+      activeTimeouts.current.push(timeout);
     }
 
-    setTimeout(() => {
+    let timeout = setTimeout(() => {
       dispatch(setBlockClick(false));
     }, MAKE_MAZE_SPEED * passageCellsInOrder.length + delay);
+    activeTimeouts.current.push(timeout);
   };
 
   return (

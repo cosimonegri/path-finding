@@ -16,7 +16,11 @@ import {
   PATH_ANIMATION_DURATION,
 } from "utils/constants/times.constants";
 
-const VisualizeButton = ({ getExplorationData, clearExploration }) => {
+const VisualizeButton = ({
+  getExplorationData,
+  clearExploration,
+  activeTimeouts,
+}) => {
   const dispatch = useDispatch();
   const grid = useSelector((state) => state.grid.grid);
   const startCoords = useSelector((state) => state.grid.startCoords);
@@ -52,6 +56,7 @@ const VisualizeButton = ({ getExplorationData, clearExploration }) => {
     }
 
     clearExploration();
+    activeTimeouts.current = [];
     dispatch(setBlockClick(true));
 
     const [visitedCellsInOrder, path] = getExplorationData(
@@ -64,21 +69,24 @@ const VisualizeButton = ({ getExplorationData, clearExploration }) => {
 
   const animateSearch = (visitedCellsInOrder, path) => {
     for (let [i, cell] of visitedCellsInOrder.entries()) {
-      setTimeout(() => {
+      let timeout = setTimeout(() => {
         makeVisitedVisually(cell);
       }, MAKE_VISITED_SPEED * i);
+      activeTimeouts.current.push(timeout);
     }
 
-    setTimeout(() => {
+    let timeout = setTimeout(() => {
       animatePath(path);
     }, MAKE_VISITED_SPEED * visitedCellsInOrder.length); //! + VISITED_ANIMATION_DURATION ???
+    activeTimeouts.current.push(timeout);
   };
 
   const animatePath = (path) => {
     for (let [i, cell] of path.entries()) {
-      setTimeout(() => {
+      let timeout = setTimeout(() => {
         makePathVisually(cell);
       }, MAKE_PATH_SPEED * i);
+      activeTimeouts.current.push(timeout);
     }
 
     setTimeout(() => {
