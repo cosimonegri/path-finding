@@ -143,8 +143,12 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   };
 
   const handleTouchMove = (event) => {
-    const x = event.touches[0].pageX;
-    const y = event.touches[0].pageY;
+    if (event.touches.length > 1) {
+      return;
+    }
+
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
     const cell = getCellFromPosition(
       x,
       y,
@@ -155,6 +159,25 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
 
     handleMouseEnter(cell);
   };
+
+  const handlePreventScrolling = (event) => {
+    if (event.touches <= 1) {
+      event.preventDefault();
+    }
+    // event.stopImmediatePropagation();
+  };
+
+  useEffect(() => {
+    document
+      .getElementById("grid")
+      .addEventListener("touchmove", (event) => handlePreventScrolling(event));
+
+    return document
+      .getElementById("grid")
+      .removeEventListener("touchmove", (event) =>
+        handlePreventScrolling(event)
+      );
+  });
 
   const recalculatePath = (newStartCoords, newEndCoords) => {
     clearExplorationGraphic();
