@@ -47,6 +47,12 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
     const gridRect = gridElement.getBoundingClientRect();
     gridPosition.current = { x: gridRect.x, y: gridRect.y };
 
+    console.log(event.touches);
+
+    if (event.touches.length > 1) {
+      return;
+    }
+
     const x = event.touches[0].pageX;
     const y = event.touches[0].pageY;
     const cell = getCellFromPosition(
@@ -138,6 +144,10 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   };
 
   const handleTouchMove = (event) => {
+    if (event.touches.length > 1) {
+      return;
+    }
+
     const x = event.touches[0].pageX;
     const y = event.touches[0].pageY;
     const cell = getCellFromPosition(
@@ -150,6 +160,23 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
 
     handleMouseEnter(cell);
   };
+
+  const handlePreventScrolling = (event) => {
+    event.preventDefault();
+    // event.stopImmediatePropagation();
+  };
+
+  useEffect(() => {
+    document
+      .getElementById("grid")
+      .addEventListener("touchmove", (event) => handlePreventScrolling(event));
+
+    return document
+      .getElementById("grid")
+      .removeEventListener("touchmove", (event) =>
+        handlePreventScrolling(event)
+      );
+  });
 
   const recalculatePath = (newStartCoords, newEndCoords) => {
     clearExplorationGraphic();
