@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { isMobile } from "react-device-detect";
+
 import Cell from "components/Cell/Cell";
 
 import {
@@ -37,24 +39,21 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   const gridPosition = useRef(null);
 
   const handleMouseDown = (event, cell) => {
-    if (event.button !== 0) return; //! only the left click counts
+    if (isMobile || event.button !== 0) return; //! only the left click counts
 
     handleStartInteraction(cell);
   };
 
   const handleTouchStart = (event) => {
-    const gridElement = document.getElementById("grid");
-    const gridRect = gridElement.getBoundingClientRect();
+    const gridRect = document.getElementById("grid").getBoundingClientRect();
     gridPosition.current = { x: gridRect.x, y: gridRect.y };
-
-    console.log(event.touches);
 
     if (event.touches.length > 1) {
       return;
     }
 
-    const x = event.touches[0].pageX;
-    const y = event.touches[0].pageY;
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
     const cell = getCellFromPosition(
       x,
       y,
@@ -148,8 +147,8 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
       return;
     }
 
-    const x = event.touches[0].pageX;
-    const y = event.touches[0].pageY;
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
     const cell = getCellFromPosition(
       x,
       y,
@@ -162,7 +161,9 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   };
 
   const handlePreventScrolling = (event) => {
-    event.preventDefault();
+    if (event.touches.length <= 1) {
+      event.preventDefault();
+    }
     // event.stopImmediatePropagation();
   };
 
