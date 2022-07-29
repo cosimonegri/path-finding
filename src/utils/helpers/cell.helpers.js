@@ -1,4 +1,6 @@
 import { getDistance } from "utils/helpers/helpers";
+import { CELL_SIZE_WITH_OUTLINE } from "utils/constants/constants";
+
 import cellStyles from "components/Cell/cell.module.css";
 
 export const createCell = (row, col) => {
@@ -147,6 +149,12 @@ export const getValidLeftRightNeighbors = (cell, grid) => {
   }
 
   return neighbors;
+};
+
+export const getCellFromPosition = (x, y, startX, startY, grid) => {
+  const row = Math.floor((y - startY) / CELL_SIZE_WITH_OUTLINE);
+  const col = Math.floor((x - startX) / CELL_SIZE_WITH_OUTLINE);
+  return grid[row][col];
 };
 
 //! do these functions create problems? is it possibile to optimize them?

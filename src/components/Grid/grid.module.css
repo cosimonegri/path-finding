@@ -1,6 +1,6 @@
 @import "utils/constants/constants.css";
 
-.grid-row {
+.grid {
   max-width: calc(var(--cell-size-with-outline) * var(--cols-num));
   margin: 12px auto auto auto;
 
