@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { isMobile } from "react-device-detect";
 
 import Header from "components/Header/Header";
 import Grid from "components/Grid/Grid";
@@ -18,7 +19,11 @@ import { getRowsNum, getColsNum } from "utils/helpers/grid.helpers";
 
 import { clearCellVisually } from "utils/helpers/cell.helpers";
 
-// milgiorare codice per sscegliere il numero di righe e colonne
+// su smartphone la dimensione della grid viene scelta all'inizio
+// poter smuovere inizio e fine su smartphone
+// levare scritta dijkstra o aggiungere algoritmo
+
+// milgiorare codice per scegliere il numero di righe e colonne
 // migliorare transizione quando le dimensioni della grid cambiano
 
 // si puo diegnare mura anche quando griglia esplorata ???
@@ -88,9 +93,11 @@ const App = () => {
     }
   };
 
+  const dependenciesArray = isMobile ? [] : [width, height];
+
   useEffect(() => {
     handleScreenResize();
-  }, [width, height]);
+  }, dependenciesArray);
 
   return (
     <>

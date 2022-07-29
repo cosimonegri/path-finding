@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Cell from "components/Cell/Cell";
 
 import {
   moveStart,
@@ -10,14 +11,15 @@ import {
 } from "redux/grid.slice";
 import { makeHandling, resetIsHandling } from "redux/interactions.slice";
 
-import { isStart, isEnd, haveSameCoords } from "utils/helpers/cell.helpers";
 import {
+  isStart,
+  isEnd,
+  getCellFromPosition,
   makeVisitedVisually,
   makePathVisually,
 } from "utils/helpers/cell.helpers";
 import { getCoordsObject } from "utils/helpers/helpers";
 
-import Cell from "components/Cell/Cell";
 import styles from "components/Grid/grid.module.css";
 
 const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
@@ -32,8 +34,33 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   const blockClick = useSelector((state) => state.interactions.blockClick);
   const isHandling = useSelector((state) => state.interactions.isHandling);
 
+  const gridPosition = useRef(null);
+
   const handleMouseDown = (event, cell) => {
     if (event.button !== 0) return; //! only the left click counts
+
+    handleStartInteraction(cell);
+  };
+
+  const handleTouchStart = (event) => {
+    const gridElement = document.getElementById("grid");
+    const gridRect = gridElement.getBoundingClientRect();
+    gridPosition.current = { x: gridRect.x, y: gridRect.y };
+
+    const x = event.touches[0].pageX;
+    const y = event.touches[0].pageY;
+    const cell = getCellFromPosition(
+      x,
+      y,
+      gridPosition.current.x,
+      gridPosition.current.y,
+      grid
+    );
+
+    handleStartInteraction(cell);
+  };
+
+  const handleStartInteraction = (cell) => {
     if (blockClick) return;
 
     if (isStart(cell, startCoords)) {
@@ -79,7 +106,7 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   const handleMouseEnter = (cell) => {
     if (isHandling.start) {
       let newStartCoords = startCoords;
-      if (!haveSameCoords(cell, endCoords)) {
+      if (!isEnd(cell, endCoords) && !isStart(cell, startCoords)) {
         dispatch(moveStart(cell));
         newStartCoords = getCoordsObject(cell.row, cell.col);
       }
@@ -91,7 +118,7 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
 
     if (isHandling.end) {
       let newEndCoords = endCoords;
-      if (!haveSameCoords(cell, startCoords)) {
+      if (!isStart(cell, startCoords) && !isEnd(cell, endCoords)) {
         dispatch(moveEnd(cell));
         newEndCoords = getCoordsObject(cell.row, cell.col);
       }
@@ -101,13 +128,27 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
       return;
     }
 
-    if (isHandling.wall) {
+    if (isHandling.wall && !cell.isWall) {
       dispatch(makeWall(cell));
-    } else if (isHandling.weight) {
+    } else if (isHandling.weight && !cell.isWeight) {
       dispatch(makeWeight(cell));
-    } else if (isHandling.clear) {
+    } else if (isHandling.clear && (cell.isWall || cell.isWeight)) {
       dispatch(clearCell(cell));
     }
+  };
+
+  const handleTouchMove = (event) => {
+    const x = event.touches[0].pageX;
+    const y = event.touches[0].pageY;
+    const cell = getCellFromPosition(
+      x,
+      y,
+      gridPosition.current.x,
+      gridPosition.current.y,
+      grid
+    );
+
+    handleMouseEnter(cell);
   };
 
   const recalculatePath = (newStartCoords, newEndCoords) => {
@@ -152,7 +193,25 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
     );
   });
 
-  return <div className={styles["grid-row"]}>{cellElements}</div>;
+  return (
+    <div
+      id={"grid"}
+      className={styles["grid"]}
+      onTouchStart={(event) => handleTouchStart(event)}
+      onTouchMove={(event) => handleTouchMove(event)}
+      onTouchEnd={() => {
+        handleMouseUp();
+        handleStartEndMouseUp();
+      }}
+      onTouchCancel={() => {
+        console.log("touch cancel");
+        handleMouseUp();
+        handleStartEndMouseUp();
+      }}
+    >
+      {cellElements}
+    </div>
+  );
 };
 
 export default Grid;
