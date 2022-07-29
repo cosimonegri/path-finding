@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { isMobile } from "react-device-detect";
+
 import Cell from "components/Cell/Cell";
 
 import {
@@ -37,24 +39,21 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   const gridPosition = useRef(null);
 
   const handleMouseDown = (event, cell) => {
-    if (event.button !== 0) return; //! only the left click counts
+    if (isMobile || event.button !== 0) return; //! only the left click counts
 
     handleStartInteraction(cell);
   };
 
   const handleTouchStart = (event) => {
-    const gridElement = document.getElementById("grid");
-    const gridRect = gridElement.getBoundingClientRect();
+    const gridRect = document.getElementById("grid").getBoundingClientRect();
     gridPosition.current = { x: gridRect.x, y: gridRect.y };
-
-    console.log(event.touches);
 
     if (event.touches.length > 1) {
       return;
     }
 
-    const x = event.touches[0].pageX;
-    const y = event.touches[0].pageY;
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
     const cell = getCellFromPosition(
       x,
       y,
@@ -144,10 +143,6 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   };
 
   const handleTouchMove = (event) => {
-    if (event.touches.length > 1) {
-      return;
-    }
-
     const x = event.touches[0].pageX;
     const y = event.touches[0].pageY;
     const cell = getCellFromPosition(
@@ -160,23 +155,6 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
 
     handleMouseEnter(cell);
   };
-
-  const handlePreventScrolling = (event) => {
-    event.preventDefault();
-    // event.stopImmediatePropagation();
-  };
-
-  useEffect(() => {
-    document
-      .getElementById("grid")
-      .addEventListener("touchmove", (event) => handlePreventScrolling(event));
-
-    return document
-      .getElementById("grid")
-      .removeEventListener("touchmove", (event) =>
-        handlePreventScrolling(event)
-      );
-  });
 
   const recalculatePath = (newStartCoords, newEndCoords) => {
     clearExplorationGraphic();

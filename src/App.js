@@ -19,7 +19,6 @@ import { getRowsNum, getColsNum } from "utils/helpers/grid.helpers";
 
 import { clearCellVisually } from "utils/helpers/cell.helpers";
 
-// su smartphone la dimensione della grid viene scelta all'inizio
 // poter smuovere inizio e fine su smartphone
 // levare scritta dijkstra o aggiungere algoritmo
 
@@ -36,6 +35,7 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 const App = () => {
   const dispatch = useDispatch();
   const { width, height } = useWindowDimensions(); // they get updated even when the window is resized
+  const dependenciesArray = useRef(isMobile ? [] : [width, height]);
   const activeTimeouts = useRef([]);
 
   const grid = useSelector((state) => state.grid.grid);
@@ -93,11 +93,9 @@ const App = () => {
     }
   };
 
-  const dependenciesArray = isMobile ? [] : [width, height];
-
   useEffect(() => {
     handleScreenResize();
-  }, dependenciesArray);
+  }, dependenciesArray.current);
 
   return (
     <>
