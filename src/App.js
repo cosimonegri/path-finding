@@ -20,7 +20,8 @@ import { getRowsNum, getColsNum } from "utils/helpers/grid.helpers";
 import { clearCellVisually } from "utils/helpers/cell.helpers";
 
 // poter smuovere inizio e fine su smartphone
-// levare scritta dijkstra o aggiungere algoritmo
+// levare scritta bellman ford o aggiungere algoritmo
+// a volte start e end sono sulla riga sbagliata per fare i maze
 
 // milgiorare codice per scegliere il numero di righe e colonne
 // migliorare transizione quando le dimensioni della grid cambiano
@@ -35,7 +36,6 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 const App = () => {
   const dispatch = useDispatch();
   const { width, height } = useWindowDimensions(); // they get updated even when the window is resized
-  const dependenciesArray = useRef(isMobile ? [] : [width, height]);
   const activeTimeouts = useRef([]);
 
   const grid = useSelector((state) => state.grid.grid);
@@ -93,9 +93,12 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    handleScreenResize();
-  }, dependenciesArray.current);
+  useEffect(
+    () => {
+      handleScreenResize();
+    },
+    isMobile ? [] : [width, height]
+  );
 
   return (
     <>
