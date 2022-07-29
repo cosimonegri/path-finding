@@ -160,22 +160,22 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
     handleMouseEnter(cell);
   };
 
-  const handlePreventScrolling = (event) => {
-    if (event.touches <= 1) {
-      event.preventDefault();
-    }
+  const handlePreventScrollingOrZoomig = (event) => {
+    event.preventDefault();
     // event.stopImmediatePropagation();
   };
 
   useEffect(() => {
     document
       .getElementById("grid")
-      .addEventListener("touchmove", (event) => handlePreventScrolling(event));
+      .addEventListener("touchmove", (event) =>
+        handlePreventScrollingOrZoomig(event)
+      );
 
     return document
       .getElementById("grid")
       .removeEventListener("touchmove", (event) =>
-        handlePreventScrolling(event)
+        handlePreventScrollingOrZoomig(event)
       );
   });
 
