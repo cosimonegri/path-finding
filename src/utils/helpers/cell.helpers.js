@@ -16,7 +16,9 @@ export const getExplorationCell = (cell, endRow, endCol) => {
   return {
     ...cell,
     visited: false,
+    visitedFromEnd: false,
     parent: null,
+    parentFromEnd: false,
     distance: Infinity,
     heuristic: getDistance(cell.row, cell.col, endRow, endCol),
   };

@@ -38,13 +38,15 @@ const VisualizeButton = ({
         return "Visualize BFS";
       case 4:
         return "Visualize DFS";
+      case 5:
+        return "Visualize Bidirectional BFS";
       default:
         return "Visualize";
     }
   };
 
   const pathAlgorithmIsUnweighted = (id) => {
-    return id === 3 || id === 4;
+    return id === 3 || id === 4 || id === 5;
   };
 
   const handleStartAlgorithm = () => {

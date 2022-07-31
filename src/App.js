@@ -14,19 +14,28 @@ import dijkstra from "algorithms/path/dijkstra";
 import aStar from "algorithms/path/aStar";
 import bfs from "algorithms/path/bfs";
 import dfs from "algorithms/path/dfs";
+import bidirectional from "algorithms/path/bidirectional";
 
 import { getRowsNum, getColsNum } from "utils/helpers/grid.helpers";
 
 import { clearCellVisually } from "utils/helpers/cell.helpers";
 
+// alert quando non si possono usare algorithmi
+
+// le celle START e END non diventano path con instantPath se sono sopra un muro
+
+// aggiungere best first search
+// migliorare codice bidirectional
+
+// aggiungere algoritmo Bellman ford ???
 // poter smuovere inizio e fine su smartphone
-// levare scritta bellman ford o aggiungere algoritmo
 // a volte start e end sono sulla riga sbagliata per fare i maze
 
-// milgiorare codice per scegliere il numero di righe e colonne
 // migliorare transizione quando le dimensioni della grid cambiano
+// refactoring codice Grid e App
+// milgiorare codice per scegliere il numero di righe e colonne
 
-// si puo diegnare mura anche quando griglia esplorata ???
+// fare schede tutorial / aggiugnere informazioni
 // far cominciare gli algoritmi maze dalla cella iniziale e non da quella in alto a sinistra ????
 
 // dijkstra e a-star: usare priority queue
@@ -67,6 +76,13 @@ const App = () => {
         break;
       case 4:
         [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
+        break;
+      case 5:
+        [visitedCellsInOrder, path] = bidirectional(
+          grid,
+          startCoords,
+          endCoords
+        );
         break;
     }
 

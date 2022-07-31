@@ -3,6 +3,7 @@ export const PATH_ALGORITHMS = {
   2: "A* Search",
   3: "Breadth-First Search",
   4: "Depth-First Search",
+  5: "Bidirectional BFS",
 };
 
 export const MAZE_ALGORITHMS = {
