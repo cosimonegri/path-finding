@@ -16,14 +16,14 @@ const aStar = (grid, startCoords, endCoords) => {
 
   const newGrid = getExplorationGrid(grid, endRow, endCol);
   const visitedCellsInOrder = [];
-  const unvisitedCells = getAllCells(newGrid);
+  const cellsToExplore = getAllCells(newGrid);
 
   const startCell = newGrid[startRow][startCol];
   startCell.distance = 0;
 
-  while (unvisitedCells.length > 0) {
-    sortCellsByDistanceAndHeuristic(unvisitedCells);
-    const cell = unvisitedCells.pop();
+  while (cellsToExplore.length > 0) {
+    sortCellsByDistanceAndHeuristic(cellsToExplore);
+    const cell = cellsToExplore.pop();
 
     if (cell.distance === Infinity) {
       break;

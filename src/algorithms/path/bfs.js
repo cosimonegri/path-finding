@@ -18,29 +18,22 @@ const bfs = (grid, startCoords, endCoords) => {
 
   const startCell = newGrid[startRow][startCol];
   startCell.visited = true;
-  visitedCellsInOrder.push(startCell);
   cellsToExplore.push(startCell);
 
-  let breakLoop = false;
-
-  while (cellsToExplore.length > 0 && !breakLoop) {
+  while (cellsToExplore.length > 0) {
     const cell = cellsToExplore.shift();
+    visitedCellsInOrder.push(cell);
+
+    if (isEnd(cell, endCoords)) break;
 
     const neighbors = getValidNeighbors(cell, newGrid);
     for (let neighbor of neighbors) {
-      if (isOnlyWall(neighbor, startCoords, endCoords) || neighbor.visited)
+      if (neighbor.visited || isOnlyWall(neighbor, startCoords, endCoords))
         continue;
 
-      neighbor.visited = true;
       neighbor.parent = cell;
-
-      visitedCellsInOrder.push(neighbor);
+      neighbor.visited = true;
       cellsToExplore.push(neighbor);
-
-      if (isEnd(neighbor, endCoords)) {
-        breakLoop = true;
-        break;
-      }
     }
   }
 

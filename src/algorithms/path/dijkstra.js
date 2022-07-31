@@ -7,7 +7,7 @@ import {
   isOnlyWall,
   isOnlyWeight,
 } from "utils/helpers/cell.helpers";
-import { getExplorationGrid, getAllCells } from "utils/helpers/grid.helpers";
+import { getExplorationGrid } from "utils/helpers/grid.helpers";
 import { getPath } from "utils/helpers/helpers";
 
 const dijkstra = (grid, startCoords, endCoords) => {
@@ -16,26 +16,24 @@ const dijkstra = (grid, startCoords, endCoords) => {
 
   const newGrid = getExplorationGrid(grid, endRow, endCol);
   const visitedCellsInOrder = [];
-  const unvisitedCells = getAllCells(newGrid);
+  const cellsToExplore = [];
 
   const startCell = newGrid[startRow][startCol];
   startCell.distance = 0;
+  startCell.visited = true;
+  cellsToExplore.push(startCell);
 
-  while (unvisitedCells.length > 0) {
-    sortCellsByDistance(unvisitedCells);
-    const cell = unvisitedCells.pop();
+  while (cellsToExplore.length > 0) {
+    sortCellsByDistance(cellsToExplore);
+    const cell = cellsToExplore.pop();
+    visitedCellsInOrder.push(cell);
 
-    if (cell.distance === Infinity) {
-      break;
-    }
-    if (isEnd(cell, endCoords)) {
-      visitedCellsInOrder.push(cell);
-      break;
-    }
+    if (isEnd(cell, endCoords)) break;
 
     const neighbors = getValidNeighbors(cell, newGrid);
     for (let neighbor of neighbors) {
-      if (isOnlyWall(neighbor, startCoords, endCoords)) continue;
+      if (neighbor.visited || isOnlyWall(neighbor, startCoords, endCoords))
+        continue;
 
       const isEdgeWeighted =
         isOnlyWeight(cell, startCoords, endCoords) ||
@@ -49,9 +47,10 @@ const dijkstra = (grid, startCoords, endCoords) => {
         neighbor.distance = newDistance;
         neighbor.parent = cell;
       }
-    }
 
-    visitedCellsInOrder.push(cell);
+      neighbor.visited = true;
+      cellsToExplore.push(neighbor);
+    }
   }
 
   const path = getPath(newGrid, endRow, endCol);

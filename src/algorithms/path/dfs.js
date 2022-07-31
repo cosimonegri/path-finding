@@ -22,23 +22,22 @@ const dfs = (grid, startCoords, endCoords) => {
   let breakSearch = false;
 
   const search = (cell) => {
-    const neighbors = getValidNeighbors(cell, newGrid);
+    visitedCellsInOrder.push(cell);
 
+    if (isEnd(cell, endCoords)) {
+      breakSearch = true;
+      return;
+    }
+
+    const neighbors = getValidNeighbors(cell, newGrid);
     for (let neighbor of neighbors) {
       if (breakSearch) return;
 
       if (isOnlyWall(neighbor, startCoords, endCoords) || neighbor.visited)
         continue;
 
-      neighbor.visited = true;
       neighbor.parent = cell;
-      visitedCellsInOrder.push(neighbor);
-
-      if (isEnd(neighbor, endCoords)) {
-        breakSearch = true;
-        return;
-      }
-
+      neighbor.visited = true;
       search(neighbor);
     }
   };
