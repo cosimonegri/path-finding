@@ -1,8 +1,10 @@
 # Pathfinding Visualizer
 
-A React App to help poeple to visuailze the execution of the most common pathfinding and maze generation algorithms in an intuitive and entertaining way.
+<!--- foto e forse badges --->x
 
-You can visit the page at (https://pathfinding-visualization-tool.netlify.app)
+A React App that gives you the change of visualizing the execution of the most common pathfinding and maze generation algorithms in an intuitive and entertaining way.
+
+You can visit the page [here](https://pathfinding-visualization-tool.netlify.app)
 
 
 # Algorithms
@@ -11,7 +13,7 @@ You can visit the page at (https://pathfinding-visualization-tool.netlify.app)
 
 - Dijkstra's Algorithm
 - A* Search
-- Best-First Search (coming soon)
+- Best-First Search (in progress)
 - Depth-First Search (DFS)
 - Breadth-First Search (BFS)
 - Bidirectional BFS
@@ -22,3 +24,4 @@ You can visit the page at (https://pathfinding-visualization-tool.netlify.app)
 - Recursive Backtracking
 - Kruskal's Algorithm
 - Prim's Algorithm
+- Binary Tree Algorithm (in progress)
