@@ -1,6 +1,6 @@
 # Pathfinding Visualizer
 
-<!--- foto e forse badges --->x
+<!--- foto e forse badges --->
 
 A React App that gives you the change of visualizing the execution of the most common pathfinding and maze generation algorithms in an intuitive and entertaining way.
 
