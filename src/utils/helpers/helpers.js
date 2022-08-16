@@ -15,7 +15,7 @@ export const getPath = (grid, endRow, endCol) => {
   let cell = grid[endRow][endCol];
 
   if (!cell.parent) {
-    return path;
+    return [];
   }
   while (cell) {
     path.push(cell);
@@ -28,7 +28,6 @@ export const getPath = (grid, endRow, endCol) => {
 // The cells of the grid must have 'parent' and 'parentFromEnd' prop
 export const getPathFromBidirectional = (grid, midRow, midCol) => {
   const pathStartMid = getPath(grid, midRow, midCol);
-
   const pathMidEnd = [];
   let cell = grid[midRow][midCol];
 

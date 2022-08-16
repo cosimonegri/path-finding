@@ -25,9 +25,6 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 
 // le celle START e END non diventano path con instantPath se sono sopra un muro
 
-// aggiungere best first search
-// migliorare codice bidirectional
-
 // aggiungere algoritmo Bellman ford ???
 // poter smuovere inizio e fine su smartphone
 // a volte start e end sono sulla riga sbagliata per fare i maze
@@ -40,7 +37,6 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 // far cominciare gli algoritmi maze dalla cella iniziale e non da quella in alto a sinistra ????
 
 // dijkstra e a-star: usare priority queue
-// dijkstra e a-star: unvisitedCells comincia vuota e si riempie via via
 // migliori funzioni per ottenere numero pari e dispari
 
 const App = () => {

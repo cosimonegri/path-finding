@@ -21,6 +21,7 @@ export const MAZE_ALGORITHMS = {
   2: "Recursive Backtracking",
   3: "Kruskal's Algorithm",
   4: "Prim's Algorithm",
+  5: "Binary Tree Algorithm",
 };
 
 export const INSTRUMENTS = {
