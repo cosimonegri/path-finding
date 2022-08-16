@@ -40,7 +40,7 @@ export const getGridForMaze = (grid) => {
   return newGrid;
 };
 
-export const getAllCells = (grid) => {
+export const getCellsList = (grid) => {
   const cellsArray = [];
   for (let row of grid) {
     for (let cell of row) {

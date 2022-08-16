@@ -16,7 +16,7 @@ import { makeHandling, resetIsHandling } from "redux/interactions.slice";
 import {
   isStart,
   isEnd,
-  getCellFromPosition,
+  getCellFromMousePosition,
   makeVisitedVisually,
   makePathVisually,
 } from "utils/helpers/cell.helpers";
@@ -54,7 +54,7 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
 
     const x = event.touches[0].clientX;
     const y = event.touches[0].clientY;
-    const cell = getCellFromPosition(
+    const cell = getCellFromMousePosition(
       x,
       y,
       gridPosition.current.x,
@@ -149,7 +149,7 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
 
     const x = event.touches[0].clientX;
     const y = event.touches[0].clientY;
-    const cell = getCellFromPosition(
+    const cell = getCellFromMousePosition(
       x,
       y,
       gridPosition.current.x,

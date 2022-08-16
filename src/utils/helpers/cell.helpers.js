@@ -56,9 +56,25 @@ export const isOnlyWeight = (cell, startCoords, endCoords) => {
 export const getCoords = (cell) => {
   return [cell.row, cell.col];
 };
+
 // The cells must have ROW and COL props
 export const haveSameCoords = (cell1, cell2) => {
   return cell1.row === cell2.row && cell1.col === cell2.col;
+};
+
+// The cells must have ROW and COL props
+export const compareCoords = (cell1, cell2) => {
+  if (cell1.row < cell2.row) {
+    return 1;
+  } else if (cell1.row > cell2.row) {
+    return -1;
+  }
+  if (cell1.col < cell2.col) {
+    return 1;
+  } else if (cell1.col > cell2.col) {
+    return -1;
+  }
+  return 1;
 };
 
 export const areCoordsInBound = (row, col, rowsNum, colsNum) => {
@@ -153,7 +169,7 @@ export const getValidLeftRightNeighbors = (cell, grid) => {
   return neighbors;
 };
 
-export const getCellFromPosition = (x, y, startX, startY, grid) => {
+export const getCellFromMousePosition = (x, y, startX, startY, grid) => {
   const row = Math.floor((y - startY) / CELL_SIZE_WITH_OUTLINE);
   const col = Math.floor((x - startX) / CELL_SIZE_WITH_OUTLINE);
   return grid[row][col];
