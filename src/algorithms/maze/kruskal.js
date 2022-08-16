@@ -10,7 +10,7 @@ const kruskal = (grid) => {
   const newGrid = getGridForMaze(grid);
   const passageCellsInOrder = [];
 
-  let unvisitedCells = getAllCellsWithOrientation(newGrid);
+  let unvisitedCells = getCellsListWithOrientation(newGrid);
   unvisitedCells = shuffleArray(unvisitedCells);
 
   for (let { cell, orientation } of unvisitedCells) {
@@ -42,7 +42,7 @@ const kruskal = (grid) => {
   return passageCellsInOrder;
 };
 
-const getAllCellsWithOrientation = (grid) => {
+const getCellsListWithOrientation = (grid) => {
   const cellsArray = [];
   const rowsNum = grid.length;
   const colsNum = grid[0].length;

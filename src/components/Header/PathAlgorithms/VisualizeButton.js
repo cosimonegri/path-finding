@@ -10,6 +10,7 @@ import {
 } from "utils/helpers/cell.helpers";
 import { hasWeights } from "utils/helpers/grid.helpers";
 
+import { PATH_ALGORITHMS_SHORT } from "utils/constants/ids.constants";
 import {
   MAKE_VISITED_SPEED,
   MAKE_PATH_SPEED,
@@ -29,24 +30,14 @@ const VisualizeButton = ({
   const blockClick = useSelector((state) => state.interactions.blockClick);
 
   const getButtonName = (id) => {
-    switch (id) {
-      case 1:
-        return "Visualize Dijkstra";
-      case 2:
-        return "Visualize A*";
-      case 3:
-        return "Visualize BFS";
-      case 4:
-        return "Visualize DFS";
-      case 5:
-        return "Visualize Bidirectional BFS";
-      default:
-        return "Visualize";
+    if (id) {
+      return "Visualize " + PATH_ALGORITHMS_SHORT[id];
     }
+    return "Visualize";
   };
 
   const pathAlgorithmIsUnweighted = (id) => {
-    return id === 3 || id === 4 || id === 5;
+    return id === 4 || id === 5 || id === 6;
   };
 
   const handleStartAlgorithm = () => {

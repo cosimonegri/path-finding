@@ -28,6 +28,9 @@ const PathDropdown = () => {
         <Dropdown.Item onClick={() => dispatch(setAlgorithmId(5))}>
           {PATH_ALGORITHMS[5]}
         </Dropdown.Item>
+        <Dropdown.Item onClick={() => dispatch(setAlgorithmId(6))}>
+          {PATH_ALGORITHMS[6]}
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

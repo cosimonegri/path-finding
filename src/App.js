@@ -12,6 +12,7 @@ import { setBlockClick } from "redux/interactions.slice";
 
 import dijkstra from "algorithms/path/dijkstra";
 import aStar from "algorithms/path/aStar";
+import greedyBestFirst from "algorithms/path/greedyBestFirst";
 import bfs from "algorithms/path/bfs";
 import dfs from "algorithms/path/dfs";
 import bidirectional from "algorithms/path/bidirectional";
@@ -72,12 +73,19 @@ const App = () => {
         [visitedCellsInOrder, path] = aStar(grid, startCoords, endCoords);
         break;
       case 3:
-        [visitedCellsInOrder, path] = bfs(grid, startCoords, endCoords);
+        [visitedCellsInOrder, path] = greedyBestFirst(
+          grid,
+          startCoords,
+          endCoords
+        );
         break;
       case 4:
-        [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
+        [visitedCellsInOrder, path] = bfs(grid, startCoords, endCoords);
         break;
       case 5:
+        [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
+        break;
+      case 6:
         [visitedCellsInOrder, path] = bidirectional(
           grid,
           startCoords,
