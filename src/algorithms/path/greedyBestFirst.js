@@ -1,5 +1,5 @@
 import { WEIGHT } from "utils/constants/constants";
-
+import { enqueue, dequeue } from "utils/helpers/heap.helpers";
 import {
   isEnd,
   getCoords,
@@ -21,11 +21,10 @@ const greedyBestFirst = (grid, startCoords, endCoords) => {
 
   const startCell = newGrid[startRow][startCol];
   startCell.visited = true;
-  cellsToExplore.push(startCell);
+  enqueue(cellsToExplore, startCell, compareHeuristic);
 
   while (cellsToExplore.length > 0) {
-    sortCellsByHeuristic(cellsToExplore);
-    const cell = cellsToExplore.pop();
+    const cell = dequeue(cellsToExplore, compareHeuristic);
     visitedCellsInOrder.push(cell);
 
     if (isEnd(cell, endCoords)) {
@@ -51,26 +50,23 @@ const greedyBestFirst = (grid, startCoords, endCoords) => {
 
       neighbor.parent = cell;
       neighbor.visited = true;
-      cellsToExplore.push(neighbor);
+      enqueue(cellsToExplore, neighbor, compareHeuristic);
     }
   }
 
   const path = getPath(newGrid, endRow, endCol);
-
   return [visitedCellsInOrder, path];
 };
 
 // The cells of the array must have HEURISTIC prop
-const sortCellsByHeuristic = (cellsArray) => {
-  cellsArray.sort((cell1, cell2) => {
-    if (cell1.heuristic < cell2.heuristic) {
-      return 1;
-    } else if (cell1.heuristic > cell2.heuristic) {
-      return -1;
-    } else {
-      return compareCoords(cell1, cell2);
-    }
-  });
+const compareHeuristic = (cell1, cell2) => {
+  if (cell1.heuristic < cell2.heuristic) {
+    return -1;
+  } else if (cell1.heuristic > cell2.heuristic) {
+    return 1;
+  } else {
+    return compareCoords(cell1, cell2);
+  }
 };
 
 export default greedyBestFirst;

@@ -51,7 +51,6 @@ const aStar = (grid, startCoords, endCoords) => {
   }
 
   const path = getPath(newGrid, endRow, endCol);
-
   return [visitedCellsInOrder, path];
 };
 

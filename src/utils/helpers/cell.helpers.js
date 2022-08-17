@@ -65,14 +65,14 @@ export const haveSameCoords = (cell1, cell2) => {
 // The cells must have ROW and COL props
 export const compareCoords = (cell1, cell2) => {
   if (cell1.row < cell2.row) {
-    return 1;
-  } else if (cell1.row > cell2.row) {
     return -1;
+  } else if (cell1.row > cell2.row) {
+    return 1;
   }
   if (cell1.col < cell2.col) {
-    return 1;
-  } else if (cell1.col > cell2.col) {
     return -1;
+  } else if (cell1.col > cell2.col) {
+    return 1;
   }
   return 1;
 };

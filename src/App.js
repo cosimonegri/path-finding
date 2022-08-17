@@ -36,7 +36,7 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 // fare schede tutorial / aggiugnere informazioni
 // far cominciare gli algoritmi maze dalla cella iniziale e non da quella in alto a sinistra ????
 
-// dijkstra e a-star: usare priority queue
+// a-star: usare priority queue
 // migliori funzioni per ottenere numero pari e dispari
 
 const App = () => {
