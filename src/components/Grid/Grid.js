@@ -45,13 +45,12 @@ const Grid = ({ getExplorationData }) => {
   };
 
   const handleTouchStart = (event) => {
-    const gridRect = document.getElementById("grid").getBoundingClientRect();
-    gridPosition.current = { x: gridRect.x, y: gridRect.y };
-
-    // pensare se portarla in cima alla funzione
     if (event.touches.length > 1) {
       return;
     }
+
+    const gridRect = document.getElementById("grid").getBoundingClientRect();
+    gridPosition.current = { x: gridRect.x, y: gridRect.y };
 
     const cell = getCellFromTouchPosition(event, gridPosition.current, grid);
     handleStartInteraction(cell);
@@ -144,7 +143,7 @@ const Grid = ({ getExplorationData }) => {
 
   const handlePreventScrollingOrZoomig = (event) => {
     event.preventDefault();
-    // event.stopImmediatePropagation();
+    event.stopImmediatePropagation();
   };
 
   useEffect(() => {
