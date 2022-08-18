@@ -137,13 +137,13 @@ const Grid = ({ getExplorationData }) => {
     if (event.touches.length > 1) {
       return;
     }
-    const cell = getCellFromTouchPosition(event, gridPosition, grid);
+    const cell = getCellFromTouchPosition(event, gridPosition.current, grid);
     handleMouseEnter(cell);
   };
 
   const handlePreventScrollingOrZoomig = (event) => {
     event.preventDefault();
-    event.stopImmediatePropagation();
+    // event.stopImmediatePropagation();
   };
 
   useEffect(() => {
