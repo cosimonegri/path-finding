@@ -16,7 +16,7 @@ import { makeHandling, resetIsHandling } from "redux/interactions.slice";
 import {
   isStart,
   isEnd,
-  getCellFromMousePosition,
+  getCellFromTouchPosition,
   makeVisitedVisually,
   makePathVisually,
 } from "utils/helpers/cell.helpers";
@@ -29,16 +29,13 @@ import styles from "components/Grid/grid.module.css";
 
 const Grid = ({ getExplorationData }) => {
   const dispatch = useDispatch();
-
   const grid = useSelector((state) => state.grid.grid);
   const startCoords = useSelector((state) => state.grid.startCoords);
   const endCoords = useSelector((state) => state.grid.endCoords);
   const isGridExplored = useSelector((state) => state.grid.isExplored);
-
   const instrumentId = useSelector((state) => state.interactions.instrumentId);
   const blockClick = useSelector((state) => state.interactions.blockClick);
   const isHandling = useSelector((state) => state.interactions.isHandling);
-
   const gridPosition = useRef(null);
 
   const handleMouseDown = (event, cell) => {
@@ -51,20 +48,12 @@ const Grid = ({ getExplorationData }) => {
     const gridRect = document.getElementById("grid").getBoundingClientRect();
     gridPosition.current = { x: gridRect.x, y: gridRect.y };
 
+    // pensare se portarla in cima alla funzione
     if (event.touches.length > 1) {
       return;
     }
 
-    const x = event.touches[0].clientX;
-    const y = event.touches[0].clientY;
-    const cell = getCellFromMousePosition(
-      x,
-      y,
-      gridPosition.current.x,
-      gridPosition.current.y,
-      grid
-    );
-
+    const cell = getCellFromTouchPosition(event, gridPosition.current, grid);
     handleStartInteraction(cell);
   };
 
@@ -149,17 +138,7 @@ const Grid = ({ getExplorationData }) => {
     if (event.touches.length > 1) {
       return;
     }
-
-    const x = event.touches[0].clientX;
-    const y = event.touches[0].clientY;
-    const cell = getCellFromMousePosition(
-      x,
-      y,
-      gridPosition.current.x,
-      gridPosition.current.y,
-      grid
-    );
-
+    const cell = getCellFromTouchPosition(event, gridPosition, grid);
     handleMouseEnter(cell);
   };
 

@@ -169,13 +169,18 @@ export const getValidLeftRightNeighbors = (cell, grid) => {
   return neighbors;
 };
 
-export const getCellFromMousePosition = (x, y, startX, startY, grid) => {
+export const getCellFromTouchPosition = (event, gridPosition, grid) => {
+  const x = event.touches[0].clientX;
+  const y = event.touches[0].clientY;
+  const startX = gridPosition.x;
+  const startY = gridPosition.y;
+
   const row = Math.floor((y - startY) / CELL_SIZE_WITH_OUTLINE);
   const col = Math.floor((x - startX) / CELL_SIZE_WITH_OUTLINE);
   return grid[row][col];
 };
 
-//! do these functions create problems? is it possibile to optimize them?
+//! Do the following functions create problems? Is it possibile to optimize them?
 
 // The cell must have ROW and COL props
 export const makeVisitedVisually = (cell) => {
