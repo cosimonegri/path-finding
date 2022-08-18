@@ -20,11 +20,14 @@ import {
   makeVisitedVisually,
   makePathVisually,
 } from "utils/helpers/cell.helpers";
-import { getCoordsObject } from "utils/helpers/helpers";
+import {
+  getCoordsObject,
+  clearExplorationVisually,
+} from "utils/helpers/helpers";
 
 import styles from "components/Grid/grid.module.css";
 
-const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
+const Grid = ({ getExplorationData }) => {
   const dispatch = useDispatch();
 
   const grid = useSelector((state) => state.grid.grid);
@@ -180,7 +183,7 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
   });
 
   const recalculatePath = (newStartCoords, newEndCoords) => {
-    clearExplorationGraphic();
+    clearExplorationVisually(grid);
 
     const [visitedCellsInOrder, path] = getExplorationData(
       newStartCoords,
@@ -232,7 +235,6 @@ const Grid = ({ clearExplorationGraphic, getExplorationData }) => {
         handleStartEndMouseUp();
       }}
       onTouchCancel={() => {
-        console.log("touch cancel");
         handleMouseUp();
         handleStartEndMouseUp();
       }}

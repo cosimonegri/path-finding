@@ -4,6 +4,7 @@ import { Nav } from "react-bootstrap";
 
 import { setIsGridExplored } from "redux/grid.slice";
 import { setBlockClick } from "redux/interactions.slice";
+
 import {
   makeVisitedVisually,
   makePathVisually,
@@ -27,13 +28,13 @@ const VisualizeButton = ({
   const startCoords = useSelector((state) => state.grid.startCoords);
   const endCoords = useSelector((state) => state.grid.endCoords);
   const algorithmId = useSelector((state) => state.interactions.algorithmId);
-  const blockClick = useSelector((state) => state.interactions.blockClick);
 
   const getButtonName = (id) => {
     if (id) {
       return "Visualize " + PATH_ALGORITHMS_SHORT[id];
+    } else {
+      return "Visualize";
     }
-    return "Visualize";
   };
 
   const pathAlgorithmIsUnweighted = (id) => {
@@ -43,13 +44,12 @@ const VisualizeButton = ({
   const handleStartAlgorithm = () => {
     if (!algorithmId) return;
     if (pathAlgorithmIsUnweighted(algorithmId) && hasWeights(grid)) {
-      //! add an alert
       console.log("This algorithm cannot be used with weights.");
+      //! add an alert
       return;
     }
 
     clearExploration();
-    activeTimeouts.current = [];
     dispatch(setBlockClick(true));
 
     const [visitedCellsInOrder, path] = getExplorationData(
@@ -82,17 +82,18 @@ const VisualizeButton = ({
       activeTimeouts.current.push(timeout);
     }
 
-    setTimeout(() => {
-      dispatch(setBlockClick(false));
+    let timeout = setTimeout(() => {
       dispatch(setIsGridExplored(true));
+      dispatch(setBlockClick(false));
     }, MAKE_PATH_SPEED * path.length + PATH_ANIMATION_DURATION);
+    activeTimeouts.current.push(timeout);
   };
 
   return (
     <Nav.Link
       className="mx-2"
       onClick={handleStartAlgorithm}
-      disabled={blockClick || !algorithmId}
+      disabled={!algorithmId}
     >
       {getButtonName(algorithmId)}
     </Nav.Link>

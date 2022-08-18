@@ -18,12 +18,17 @@ import dfs from "algorithms/path/dfs";
 import bidirectional from "algorithms/path/bidirectional";
 
 import { getRowsNum, getColsNum } from "utils/helpers/grid.helpers";
-
-import { clearCellVisually } from "utils/helpers/cell.helpers";
+import {
+  clearExplorationVisually,
+  clearAllTimeouts,
+} from "utils/helpers/helpers";
 
 // alert quando non si possono usare algorithmi
 
 // le celle START e END non diventano path con instantPath se sono sopra un muro
+
+// su schermi piccoli le celle sono più piccole
+// aggiungere link al profilo github
 
 // aggiungere algoritmo Bellman ford ???
 // poter smuovere inizio e fine su smartphone
@@ -31,7 +36,7 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 
 // migliorare transizione quando le dimensioni della grid cambiano
 // refactoring codice Grid e App
-// milgiorare codice per scegliere il numero di righe e colonne
+// migliorare codice e css per scegliere il numero di righe e colonne
 
 // fare schede tutorial / aggiugnere informazioni
 // far cominciare gli algoritmi maze dalla cella iniziale e non da quella in alto a sinistra ????
@@ -41,7 +46,7 @@ import { clearCellVisually } from "utils/helpers/cell.helpers";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { width, height } = useWindowDimensions(); // they get updated even when the window is resized
+  const { width, height } = useWindowDimensions(); // they areautomatically updated when the window is resized
   const activeTimeouts = useRef([]);
 
   const grid = useSelector((state) => state.grid.grid);
@@ -49,45 +54,26 @@ const App = () => {
   const colsNum = useSelector((state) => state.grid.colsNum);
   const algorithmId = useSelector((state) => state.interactions.algorithmId);
 
-  const clearExplorationGraphic = () => {
-    for (let row of grid) {
-      for (let cell of row) {
-        clearCellVisually(cell);
-      }
-    }
-  };
-
   const getExplorationData = (startCoords, endCoords) => {
     let visitedCellsInOrder;
     let path;
 
-    switch (algorithmId) {
-      case 1:
-        [visitedCellsInOrder, path] = dijkstra(grid, startCoords, endCoords);
-        break;
-      case 2:
-        [visitedCellsInOrder, path] = aStar(grid, startCoords, endCoords);
-        break;
-      case 3:
-        [visitedCellsInOrder, path] = greedyBestFirst(
-          grid,
-          startCoords,
-          endCoords
-        );
-        break;
-      case 4:
-        [visitedCellsInOrder, path] = bfs(grid, startCoords, endCoords);
-        break;
-      case 5:
-        [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
-        break;
-      case 6:
-        [visitedCellsInOrder, path] = bidirectional(
-          grid,
-          startCoords,
-          endCoords
-        );
-        break;
+    if (algorithmId === 1) {
+      [visitedCellsInOrder, path] = dijkstra(grid, startCoords, endCoords);
+    } else if (algorithmId === 2) {
+      [visitedCellsInOrder, path] = aStar(grid, startCoords, endCoords);
+    } else if (algorithmId === 3) {
+      [visitedCellsInOrder, path] = greedyBestFirst(
+        grid,
+        startCoords,
+        endCoords
+      );
+    } else if (algorithmId === 4) {
+      [visitedCellsInOrder, path] = bfs(grid, startCoords, endCoords);
+    } else if (algorithmId === 5) {
+      [visitedCellsInOrder, path] = dfs(grid, startCoords, endCoords);
+    } else if (algorithmId === 6) {
+      [visitedCellsInOrder, path] = bidirectional(grid, startCoords, endCoords);
     }
 
     return [visitedCellsInOrder, path];
@@ -98,19 +84,17 @@ const App = () => {
     const newColsNum = getColsNum(width);
 
     if (newRowsNum !== rowsNum || newColsNum !== colsNum) {
-      while (activeTimeouts.current.length > 0) {
-        const timeout = activeTimeouts.current.pop();
-        clearTimeout(timeout);
-      }
-
-      clearExplorationGraphic();
-      dispatch(setIsGridExplored(false));
-
-      dispatch(
-        changeGridDimensions({ rowsNum: newRowsNum, colsNum: newColsNum })
-      );
-      dispatch(setBlockClick(false));
+      clearAllTimeouts(activeTimeouts.current);
+      handleChangeGridDimensions(newRowsNum, newColsNum);
     }
+  };
+
+  const handleChangeGridDimensions = (rowsNum, colsNum) => {
+    clearExplorationVisually(grid);
+    dispatch(changeGridDimensions({ rowsNum: rowsNum, colsNum: colsNum }));
+
+    dispatch(setIsGridExplored(false));
+    dispatch(setBlockClick(false));
   };
 
   useEffect(
@@ -123,14 +107,10 @@ const App = () => {
   return (
     <>
       <Header
-        clearExplorationGraphic={clearExplorationGraphic}
         getExplorationData={getExplorationData}
         activeTimeouts={activeTimeouts}
       />
-      <Grid
-        clearExplorationGraphic={clearExplorationGraphic}
-        getExplorationData={getExplorationData}
-      />
+      <Grid getExplorationData={getExplorationData} />
     </>
   );
 };

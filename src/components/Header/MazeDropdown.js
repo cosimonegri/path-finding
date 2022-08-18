@@ -5,8 +5,6 @@ import { Dropdown, NavLink, NavItem } from "react-bootstrap";
 import { makeWall, clearCell, coverGridWithWalls } from "redux/grid.slice";
 import { setBlockClick } from "redux/interactions.slice";
 
-import MazeButton from "components/Header/MazeAlgorithms/MazeButton";
-
 import recursiveDivision from "algorithms/maze/recursiveDivision";
 import recursiveBacktracking from "algorithms/maze/recursiveBacktracking";
 import kruskal from "algorithms/maze/kruskal";
@@ -28,7 +26,6 @@ const MazeDropdown = ({ clearGrid, clearExploration, activeTimeouts }) => {
   };
 
   const handleStartMaze = (mazeId) => {
-    dispatch(setBlockClick(true));
     let wallCellsInOrder;
     let passageCellsInOrder;
 
@@ -46,10 +43,12 @@ const MazeDropdown = ({ clearGrid, clearExploration, activeTimeouts }) => {
 
     if (mazeAlgorithmOnWalls(mazeId)) {
       clearGrid();
+      dispatch(setBlockClick(true));
       animateMazeWalls(wallCellsInOrder);
     } else {
       clearExploration();
       dispatch(coverGridWithWalls());
+      dispatch(setBlockClick(true));
       animateMazePassages(passageCellsInOrder);
     }
   };
@@ -88,31 +87,13 @@ const MazeDropdown = ({ clearGrid, clearExploration, activeTimeouts }) => {
     <Dropdown className="mx-2" as={NavItem}>
       <Dropdown.Toggle as={NavLink}>Mazes</Dropdown.Toggle>
       <Dropdown.Menu variant="dark">
-        <MazeButton
-          mazeId={1}
-          mazeName={MAZE_ALGORITHMS[1]}
-          startMaze={(mazeId) => handleStartMaze(mazeId)}
-        />
-        <MazeButton
-          mazeId={2}
-          mazeName={MAZE_ALGORITHMS[2]}
-          startMaze={(mazeId) => handleStartMaze(mazeId)}
-        />
-        <MazeButton
-          mazeId={3}
-          mazeName={MAZE_ALGORITHMS[3]}
-          startMaze={(mazeId) => handleStartMaze(mazeId)}
-        />
-        <MazeButton
-          mazeId={4}
-          mazeName={MAZE_ALGORITHMS[4]}
-          startMaze={(mazeId) => handleStartMaze(mazeId)}
-        />
-        <MazeButton
-          mazeId={5}
-          mazeName={MAZE_ALGORITHMS[5]}
-          startMaze={(mazeId) => handleStartMaze(mazeId)}
-        />
+        {[...Array(5).keys()].map((i) => {
+          return (
+            <Dropdown.Item key={i + 1} onClick={() => handleStartMaze(i + 1)}>
+              {MAZE_ALGORITHMS[i + 1]}
+            </Dropdown.Item>
+          );
+        })}
       </Dropdown.Menu>
     </Dropdown>
   );

@@ -1,3 +1,9 @@
+import { clearCellVisually } from "utils/helpers/cell.helpers";
+
+export const swap = (array, idx1, idx2) => {
+  [array[idx1], array[idx2]] = [array[idx2], array[idx1]];
+};
+
 export const getCoordsObject = (row, col) => {
   return {
     row: row,
@@ -39,6 +45,16 @@ export const getPathFromBidirectional = (grid, midRow, midCol) => {
   return [...pathStartMid, ...pathMidEnd];
 };
 
-export const swap = (array, idx1, idx2) => {
-  [array[idx1], array[idx2]] = [array[idx2], array[idx1]];
+export const clearExplorationVisually = (grid) => {
+  for (let row of grid) {
+    for (let cell of row) {
+      clearCellVisually(cell);
+    }
+  }
+};
+
+export const clearAllTimeouts = (timeoutsArray) => {
+  while (timeoutsArray.length > 0) {
+    clearTimeout(timeoutsArray.pop());
+  }
 };
