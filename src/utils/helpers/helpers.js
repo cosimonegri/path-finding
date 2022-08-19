@@ -45,16 +45,16 @@ export const getPathFromBidirectional = (grid, midRow, midCol) => {
   return [...pathStartMid, ...pathMidEnd];
 };
 
+export const clearAllTimeouts = (timeoutsArray) => {
+  while (timeoutsArray.length > 0) {
+    clearTimeout(timeoutsArray.pop());
+  }
+};
+
 export const clearExplorationVisually = (grid) => {
   for (let row of grid) {
     for (let cell of row) {
       clearCellVisually(cell);
     }
-  }
-};
-
-export const clearAllTimeouts = (timeoutsArray) => {
-  while (timeoutsArray.length > 0) {
-    clearTimeout(timeoutsArray.pop());
   }
 };

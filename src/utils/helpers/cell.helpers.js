@@ -52,6 +52,15 @@ export const isOnlyWeight = (cell, startCoords, endCoords) => {
   );
 };
 
+export const isClear = (cell, startCoords, endCoords) => {
+  return (
+    !cell.isWall &&
+    !cell.isWeight &&
+    !isStart(cell, startCoords) &&
+    !isEnd(cell, endCoords)
+  );
+};
+
 // The cell must have ROW and COL props
 export const getCoords = (cell) => {
   return [cell.row, cell.col];
@@ -169,11 +178,11 @@ export const getValidLeftRightNeighbors = (cell, grid) => {
   return neighbors;
 };
 
-export const getCellFromTouchPosition = (event, gridPosition, grid) => {
+export const getCellFromTouchPosition = (event, gridStartPosition, grid) => {
   const x = event.touches[0].clientX;
   const y = event.touches[0].clientY;
-  const startX = gridPosition.x;
-  const startY = gridPosition.y;
+  const startX = gridStartPosition.current.x;
+  const startY = gridStartPosition.current.y;
 
   const row = Math.floor((y - startY) / CELL_SIZE_WITH_OUTLINE);
   const col = Math.floor((x - startX) / CELL_SIZE_WITH_OUTLINE);

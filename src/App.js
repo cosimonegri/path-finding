@@ -25,8 +25,6 @@ import {
 
 // alert quando non si possono usare algorithmi
 
-// le celle START e END non diventano path con instantPath se sono sopra un muro
-
 // su schermi piccoli le celle sono più piccole
 // aggiungere link al profilo github
 
@@ -48,7 +46,7 @@ import {
 
 const App = () => {
   const dispatch = useDispatch();
-  const { width, height } = useWindowDimensions(); // they areautomatically updated when the window is resized
+  const { width, height } = useWindowDimensions(); // they are automatically updated when the window is resized
   const activeTimeouts = useRef([]);
 
   const grid = useSelector((state) => state.grid.grid);
