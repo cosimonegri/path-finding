@@ -102,6 +102,11 @@ const App = () => {
     isMobile ? [] : [width, height]
   );
 
+  useEffect(() => {
+    window.addEventListener("orientationchange", handleScreenResize);
+    return window.removeEventListener("resize", handleScreenResize);
+  });
+
   return (
     <>
       <Header
