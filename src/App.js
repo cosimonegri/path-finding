@@ -1,13 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isMobile } from "react-device-detect";
 
 import Header from "components/Header/Header";
 import Grid from "components/Grid/Grid";
 
 import useWindowDimensions from "hooks/useWindowDimensions";
 
-import { changeOrientation } from "redux/device.slice";
+import { updateDevice } from "redux/device.slice";
 import { changeGridDimensions, setIsGridExplored } from "redux/grid.slice";
 import { setBlockClick } from "redux/interactions.slice";
 
@@ -50,6 +49,7 @@ const App = () => {
   const { width, height } = useWindowDimensions(); // they are automatically updated when the window is resized
   const activeTimeouts = useRef([]);
 
+  const isMobile = useSelector((state) => state.device.isMobile);
   const orientation = useSelector((state) => state.device.orientation);
   const grid = useSelector((state) => state.grid.grid);
   const rowsNum = useSelector((state) => state.grid.rowsNum);
@@ -81,7 +81,7 @@ const App = () => {
     return [visitedCellsInOrder, path];
   };
 
-  const handleScreenResize = () => {
+  const handleResizeGrid = () => {
     const newRowsNum = getRowsNum(height);
     const newColsNum = getColsNum(width);
 
@@ -97,21 +97,20 @@ const App = () => {
     }
   };
 
-  const handleChangeOrientation = () => {
-    dispatch(changeOrientation);
+  const handleUpdateDevice = () => {
+    setTimeout(() => dispatch(updateDevice()), 10);
   };
 
   useEffect(
     () => {
-      handleScreenResize();
+      handleResizeGrid();
     },
-    isMobile ? [] : [width, height, orientation]
+    isMobile ? [isMobile, orientation] : [width, height]
   );
 
   useEffect(() => {
-    window.addEventListener("orientationchange", handleChangeOrientation);
-    return window.removeEventListener("resize", handleChangeOrientation);
-  });
+    handleUpdateDevice();
+  }, [width, height]);
 
   return (
     <>

@@ -1,9 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getDevice = () => {
+  return !!navigator.maxTouchPoints ? true : false;
+};
+
+const getOrientation = () => {
+  return !navigator.maxTouchPoints
+    ? "desktop"
+    : !window.screen.orientation.angle
+    ? "portrait"
+    : "landscape";
+};
+
 const initialState = () => {
   return {
-    device: null,
-    orientation: null,
+    isMobile: getDevice(),
+    orientation: getOrientation(),
   };
 };
 
@@ -11,19 +23,13 @@ export const deviceSlice = createSlice({
   name: "device",
   initialState,
   reducers: {
-    changeDevice: (state) => {
-      state.device = !!navigator.maxTouchPoints ? "mobile" : "computer";
-    },
-    changeOrientation: (state) => {
-      state.orientation = !navigator.maxTouchPoints
-        ? "desktop"
-        : !window.screen.orientation.angle
-        ? "portrait"
-        : "landscape";
+    updateDevice: (state) => {
+      state.device = getDevice();
+      state.orientation = getOrientation();
     },
   },
 });
 
-export const { setDevice, changeOrientation } = deviceSlice.actions;
+export const { updateDevice } = deviceSlice.actions;
 
 export default deviceSlice.reducer;
