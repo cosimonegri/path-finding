@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isMobile } from "react-device-detect";
 
 import Cell from "components/Cell/Cell";
 
@@ -34,6 +33,7 @@ import styles from "components/Grid/grid.module.css";
 
 const Grid = ({ getExplorationData }) => {
   const dispatch = useDispatch();
+  const isMobile = useSelector((state) => state.device.isMobile);
   const grid = useSelector((state) => state.grid.grid);
   const startCoords = useSelector((state) => state.grid.startCoords);
   const endCoords = useSelector((state) => state.grid.endCoords);
@@ -119,7 +119,7 @@ const Grid = ({ getExplorationData }) => {
 
   const handleTouchStart = (event) => {
     // if (!isMobile) return;
-    if (isTouchMultiple(event)) return;
+    if (!isMobile || isTouchMultiple(event)) return;
 
     updateGridStartPosition();
     const cell = getCellFromTouchPosition(event, gridStartPosition, grid);
@@ -133,7 +133,7 @@ const Grid = ({ getExplorationData }) => {
 
   const handleTouchMove = (event) => {
     // if (!isMobile) return;
-    if (isTouchMultiple(event)) return;
+    if (!isMobile || isTouchMultiple(event)) return;
 
     // updateGridStartPosition();
     const cell = getCellFromTouchPosition(event, gridStartPosition, grid);
