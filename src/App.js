@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 import Header from "components/Header/Header";
 import Grid from "components/Grid/Grid";
-
 import useWindowDimensions from "hooks/useWindowDimensions";
 
 import { updateDevice } from "redux/device.slice";
@@ -23,13 +23,11 @@ import {
   clearAllTimeouts,
 } from "utils/helpers/helpers";
 
-// alert quando non si possono usare algorithmi
-
-// su schermi piccoli le celle sono più piccole
 // aggiungere link al profilo github
 
 // poter smuovere inizio e fine su smartphone
 
+// su schermi piccoli le celle sono più piccole
 // migliorare transizione quando le dimensioni della grid cambiano
 // migliorare codice e css per scegliere il numero di righe e colonne
 
@@ -43,6 +41,7 @@ const App = () => {
   const dispatch = useDispatch();
   const { width, height } = useWindowDimensions(); // they are automatically updated when the window is resized
   const activeTimeouts = useRef([]);
+  const initialRender = useRef(true);
 
   const isMobile = useSelector((state) => state.device.isMobile);
   const orientation = useSelector((state) => state.device.orientation);
@@ -76,7 +75,27 @@ const App = () => {
     return [visitedCellsInOrder, path];
   };
 
+  const notifyGridResize = () => {
+    if (!initialRender.current) {
+      toast.warning("The grid has been resized", {
+        toastId: "resize",
+        position: "top-right",
+        autoClose: 2000,
+        theme: "colored",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        pauseOnFocusLoss: false,
+      });
+    } else {
+      initialRender.current = false;
+    }
+  };
+
   const handleResizeGrid = () => {
+    notifyGridResize();
     const newRowsNum = getRowsNum(height);
     const newColsNum = getColsNum(width);
 
@@ -114,6 +133,7 @@ const App = () => {
         activeTimeouts={activeTimeouts}
       />
       <Grid getExplorationData={getExplorationData} />
+      <ToastContainer />
     </>
   );
 };
