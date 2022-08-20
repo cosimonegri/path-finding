@@ -6,14 +6,13 @@ A React App that gives you the change of visualizing the execution of the most c
 
 You can visit the page [here](https://pathfinding-visualization-tool.netlify.app)
 
-
 # Algorithms
 
 ### Pathfinding
 
 - Dijkstra's Algorithm
-- A* Search
-- Best-First Search (in progress)
+- A\* Search
+- Best-First Search
 - Depth-First Search (DFS)
 - Breadth-First Search (BFS)
 - Bidirectional BFS
@@ -24,4 +23,4 @@ You can visit the page [here](https://pathfinding-visualization-tool.netlify.app
 - Recursive Backtracking
 - Kruskal's Algorithm
 - Prim's Algorithm
-- Binary Tree Algorithm (in progress)
+- Binary Tree Algorithm
