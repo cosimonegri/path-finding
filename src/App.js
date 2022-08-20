@@ -32,7 +32,6 @@ import {
 // migliorare codice e css per scegliere il numero di righe e colonne
 
 // fare schede tutorial / aggiugnere informazioni
-// far cominciare gli algoritmi maze dalla cella iniziale e non da quella in alto a sinistra ????
 
 // a-star: usare priority queue
 // migliori funzioni per ottenere numero pari e dispari
@@ -76,11 +75,18 @@ const App = () => {
   };
 
   const notifyGridResize = () => {
-    if (!initialRender.current) {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+    const toastId = "gridResize";
+    const activeTime = 2000;
+
+    if (!toast.isActive(toastId)) {
       toast.warning("The grid has been resized", {
-        toastId: "resize",
+        toastId: toastId,
+        autoClose: activeTime,
         position: "top-right",
-        autoClose: 2000,
         theme: "colored",
         hideProgressBar: false,
         closeOnClick: true,
@@ -90,7 +96,7 @@ const App = () => {
         pauseOnFocusLoss: false,
       });
     } else {
-      initialRender.current = false;
+      toast.update(toastId, { autoClose: activeTime });
     }
   };
 

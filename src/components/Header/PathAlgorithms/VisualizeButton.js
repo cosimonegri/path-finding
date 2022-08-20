@@ -12,10 +12,7 @@ import {
 } from "utils/helpers/cell.helpers";
 import { hasWeights } from "utils/helpers/grid.helpers";
 
-import {
-  PATH_ALGORITHMS,
-  PATH_ALGORITHMS_SHORT,
-} from "utils/constants/ids.constants";
+import { PATH_ALGORITHMS_SHORT } from "utils/constants/ids.constants";
 import {
   MAKE_VISITED_SPEED,
   MAKE_PATH_SPEED,
@@ -45,25 +42,32 @@ const VisualizeButton = ({
     return id === 4 || id === 5 || id === 6;
   };
 
-  const notifyPathAlgorithmError = (id) => {
-    toast.error("This algorithm cannot be used with weights", {
-      toastId: id,
-      position: "top-right",
-      autoClose: 3000,
-      theme: "colored",
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      pauseOnFocusLoss: false,
-    });
+  const notifyPathAlgorithmError = () => {
+    const toastId = "algorithmError";
+    const activeTime = 3000;
+
+    if (!toast.isActive(toastId)) {
+      toast.error("This algorithm cannot be used with weights", {
+        toastId: toastId,
+        autoClose: activeTime,
+        position: "top-right",
+        theme: "colored",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        pauseOnFocusLoss: false,
+      });
+    } else {
+      toast.update(toastId, { autoClose: activeTime });
+    }
   };
 
   const handleStartAlgorithm = () => {
     if (!algorithmId) return;
     if (pathAlgorithmIsUnweighted(algorithmId) && hasWeights(grid)) {
-      notifyPathAlgorithmError(algorithmId);
+      notifyPathAlgorithmError();
       return;
     }
 
