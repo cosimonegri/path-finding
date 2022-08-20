@@ -34,10 +34,12 @@ import styles from "components/Grid/grid.module.css";
 const Grid = ({ getExplorationData }) => {
   const dispatch = useDispatch();
   const isMobile = useSelector((state) => state.device.isMobile);
+
   const grid = useSelector((state) => state.grid.grid);
   const startCoords = useSelector((state) => state.grid.startCoords);
   const endCoords = useSelector((state) => state.grid.endCoords);
   const isGridExplored = useSelector((state) => state.grid.isExplored);
+
   const instrumentId = useSelector((state) => state.interactions.instrumentId);
   const blockClick = useSelector((state) => state.interactions.blockClick);
   const isHandling = useSelector((state) => state.interactions.isHandling);
@@ -46,6 +48,30 @@ const Grid = ({ getExplorationData }) => {
   const updateGridStartPosition = () => {
     const gridRect = document.getElementById("grid").getBoundingClientRect();
     gridStartPosition.current = { x: gridRect.x, y: gridRect.y };
+  };
+
+  const handleMouseDown = (event, cell) => {
+    if (isMobile || !isClickLeft(event)) return;
+    handleStartInteraction(cell);
+  };
+
+  const handleTouchStart = (event) => {
+    if (!isMobile || isTouchMultiple(event)) return;
+    updateGridStartPosition();
+    const cell = getCellFromTouchPosition(event, gridStartPosition, grid);
+    handleStartInteraction(cell);
+  };
+
+  const handleMouseEnter = (event, cell) => {
+    if (isMobile || !isClickLeft(event)) return;
+    handleContinueInteraction(cell);
+  };
+
+  const handleTouchMove = (event) => {
+    if (!isMobile || isTouchMultiple(event)) return;
+    // updateGridStartPosition();
+    const cell = getCellFromTouchPosition(event, gridStartPosition, grid);
+    handleContinueInteraction(cell);
   };
 
   const handleStartInteraction = (cell) => {
@@ -112,67 +138,35 @@ const Grid = ({ getExplorationData }) => {
     }
   };
 
-  const handleMouseDown = (event, cell) => {
-    if (isMobile || !isClickLeft(event)) return;
-    handleStartInteraction(cell);
-  };
-
-  const handleTouchStart = (event) => {
-    // if (!isMobile) return;
-    if (!isMobile || isTouchMultiple(event)) return;
-
-    updateGridStartPosition();
-    const cell = getCellFromTouchPosition(event, gridStartPosition, grid);
-    handleStartInteraction(cell);
-  };
-
-  const handleMouseEnter = (event, cell) => {
-    if (isMobile || !isClickLeft(event)) return;
-    handleContinueInteraction(cell);
-  };
-
-  const handleTouchMove = (event) => {
-    // if (!isMobile) return;
-    if (!isMobile || isTouchMultiple(event)) return;
-
-    // updateGridStartPosition();
-    const cell = getCellFromTouchPosition(event, gridStartPosition, grid);
-    handleContinueInteraction(cell);
-  };
-
-  const handleStartEndMouseUp = () => {
-    dispatch(resetIsHandling(["start", "end"]));
-  };
-
-  const handleInstrumentMouseUp = () => {
-    dispatch(resetIsHandling(["wall", "weight", "clear"]));
-  };
-
-  const handleMouseUp = () => {
-    handleStartEndMouseUp();
-    handleInstrumentMouseUp();
+  const handleEndInteraction = () => {
+    dispatch(resetIsHandling());
   };
 
   useEffect(() => {
-    window.addEventListener("mouseup", handleInstrumentMouseUp);
-    return () => window.removeEventListener("mouseup", handleInstrumentMouseUp);
+    window.addEventListener("mouseup", handleEndInteraction);
+    window.addEventListener("touchend", handleEndInteraction);
+    window.addEventListener("touchcancel", handleEndInteraction);
+    return () => {
+      window.removeEventListener("mouseup", handleEndInteraction);
+      window.removeEventListener("touchend", handleEndInteraction);
+      window.removeEventListener("touchcancel", handleEndInteraction);
+    };
   }, []);
 
-  const handlePreventScrollingOrZoomig = (event) => {
+  const handlePreventScrollAndZoom = (event) => {
     event.preventDefault();
     // event.stopImmediatePropagation();
   };
 
-  //! la modifica potrebbe dare problemi?
   useEffect(() => {
     const gridElement = document.getElementById("grid");
     gridElement.addEventListener("touchmove", (event) =>
-      handlePreventScrollingOrZoomig(event)
+      handlePreventScrollAndZoom(event)
     );
-
-    return gridElement.removeEventListener("touchmove", (event) =>
-      handlePreventScrollingOrZoomig(event)
-    );
+    return () =>
+      gridElement.removeEventListener("touchmove", (event) =>
+        handlePreventScrollAndZoom(event)
+      );
   });
 
   const recalculatePath = (newStartCoords, newEndCoords) => {
@@ -181,7 +175,6 @@ const Grid = ({ getExplorationData }) => {
       newStartCoords,
       newEndCoords
     );
-
     for (let cell of visitedCellsInOrder) {
       makeVisitedVisually(cell);
     }
@@ -196,8 +189,6 @@ const Grid = ({ getExplorationData }) => {
       className={styles["grid"]}
       onTouchStart={(event) => handleTouchStart(event)}
       onTouchMove={(event) => handleTouchMove(event)}
-      onTouchEnd={handleMouseUp}
-      onTouchCancel={handleMouseUp}
     >
       {grid.map((row, rowIndex) => {
         return (
@@ -209,7 +200,6 @@ const Grid = ({ getExplorationData }) => {
                   cell={cell}
                   handleMouseDown={(event) => handleMouseDown(event, cell)}
                   handleMouseEnter={(event) => handleMouseEnter(event, cell)}
-                  handleStartEndMouseUp={handleStartEndMouseUp}
                 />
               );
             })}

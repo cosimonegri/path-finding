@@ -16,12 +16,7 @@ import {
 import { ICON_COLOR } from "utils/constants/constants";
 import styles from "components/Cell/cell.module.css";
 
-const Cell = ({
-  cell,
-  handleMouseDown,
-  handleMouseEnter,
-  handleStartEndMouseUp,
-}) => {
+const Cell = ({ cell, handleMouseDown, handleMouseEnter }) => {
   const startCoords = useSelector((state) => state.grid.startCoords);
   const endCoords = useSelector((state) => state.grid.endCoords);
   const isGridExplored = useSelector((state) => state.grid.isExplored);
@@ -49,8 +44,7 @@ const Cell = ({
         className={getCellClassName(cell, startCoords, endCoords)}
         style={getCellStyle(isGridExplored)}
         onMouseDown={(event) => handleMouseDown(event)}
-        onMouseEnter={handleMouseEnter}
-        onMouseUp={handleStartEndMouseUp}
+        onMouseEnter={(event) => handleMouseEnter(event)}
       >
         {isStart(cell, startCoords) && (
           <MdArrowForwardIos className={styles.start} />

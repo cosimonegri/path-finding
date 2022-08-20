@@ -34,9 +34,7 @@ export const interactionsSlice = createSlice({
       state.isHandling[action.payload] = true;
     },
     resetIsHandling: (state, action) => {
-      for (let instrument of action.payload) {
-        state.isHandling[instrument] = false;
-      }
+      state.isHandling = getInitialIsHandling();
     },
   },
 });

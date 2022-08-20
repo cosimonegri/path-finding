@@ -28,14 +28,10 @@ import {
 // su schermi piccoli le celle sono più piccole
 // aggiungere link al profilo github
 
-// aggiungere algoritmo Bellman ford ???
 // poter smuovere inizio e fine su smartphone
 // a volte start e end sono sulla riga sbagliata per fare i maze
 
-// levare block animation ??
-
 // migliorare transizione quando le dimensioni della grid cambiano
-// refactoring codice Grid
 // migliorare codice e css per scegliere il numero di righe e colonne
 
 // fare schede tutorial / aggiugnere informazioni
