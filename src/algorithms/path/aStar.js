@@ -25,11 +25,11 @@ const aStar = (grid, startCoords, endCoords) => {
   while (cellsToExplore.length > 0) {
     sortCellsByDistanceAndHeuristic(cellsToExplore);
     const cell = cellsToExplore.pop();
-    visitedCellsInOrder.push(cell);
 
     if (isEnd(cell, endCoords)) {
       break;
     }
+    visitedCellsInOrder.push(cell);
 
     const neighbors = getValidNeighbors(cell, newGrid);
     for (let neighbor of neighbors) {
