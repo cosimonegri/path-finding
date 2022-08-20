@@ -23,13 +23,13 @@ import {
   clearAllTimeouts,
 } from "utils/helpers/helpers";
 
-// aggiungere info su lunghezza path
-// fare schede tutorial / aggiugnere informazioni
+// fare schede tutorial ???
+// refactoring ultimo codice scritto ???
 
 // poter smuovere inizio e fine su smartphone
 
 // su schermi piccoli le celle sono più piccole
-// migliorare codice e css per scegliere il numero di righe e colonne
+// refactoring codice e css per scegliere il numero di righe e colonne
 // migliorare transizione quando le dimensioni della grid cambiano
 // la notifica della grid resize potrebbe non funzionare in modo ottimale
 

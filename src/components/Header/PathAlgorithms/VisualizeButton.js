@@ -11,6 +11,7 @@ import {
   makePathVisually,
 } from "utils/helpers/cell.helpers";
 import { hasWeights } from "utils/helpers/grid.helpers";
+import { getToastStyle } from "utils/helpers/helpers";
 
 import { PATH_ALGORITHMS_SHORT } from "utils/constants/ids.constants";
 import {
@@ -47,45 +48,30 @@ const VisualizeButton = ({
   };
 
   const notifyPathAlgorithmError = () => {
+    const text = "This algorithm cannot be used with weights";
     const toastId = "algorithmError";
     const activeTime = 3000;
 
     if (!toast.isActive(toastId)) {
-      toast.error("This algorithm cannot be used with weights", {
-        toastId: toastId,
-        autoClose: activeTime,
-        position: "bottom-right",
-        theme: "colored",
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        pauseOnFocusLoss: false,
-      });
+      toast.error(text, getToastStyle(toastId, activeTime));
     } else {
       toast.update(toastId, { autoClose: activeTime });
     }
   };
 
   const notifyPathFound = (pathLength) => {
-    const text = "Found path of length " + pathLength;
+    const text = pathLength
+      ? "Found path of length " + (pathLength - 1)
+      : "No path found";
     const toastId = "pathFound";
     const activeTime = 3000;
 
     if (!toast.isActive(toastId)) {
-      toast.success(text, {
-        toastId: toastId,
-        autoClose: activeTime,
-        position: "bottom-right",
-        theme: "colored",
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        pauseOnFocusLoss: false,
-      });
+      if (pathLength) {
+        toast.success(text, getToastStyle(toastId, activeTime));
+      } else {
+        toast.warning(text, getToastStyle(toastId, activeTime));
+      }
     } else {
       toast.update(toastId, { render: text, autoClose: activeTime });
     }
@@ -93,24 +79,13 @@ const VisualizeButton = ({
 
   const notifyOptimalPath = (algorithmId) => {
     const text = pathAlgorithmIsOptimal(algorithmId)
-      ? "The path is optimal"
-      : "The path might not be optimal";
+      ? "The path length is optimal"
+      : "The path length might not be optimal";
     const toastId = "optimalPath";
     const activeTime = 3000;
 
     if (!toast.isActive(toastId)) {
-      toast.info(text, {
-        toastId: toastId,
-        autoClose: activeTime,
-        position: "bottom-right",
-        theme: "colored",
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        pauseOnFocusLoss: false,
-      });
+      toast.info(text, getToastStyle(toastId, activeTime));
     } else {
       toast.update(toastId, { render: text, autoClose: activeTime });
     }
@@ -157,10 +132,12 @@ const VisualizeButton = ({
       activeTimeouts.current.push(timeout);
     }
 
-    let timeout1 = setTimeout(() => {
-      notifyOptimalPath(algorithmId);
-    }, MAKE_PATH_SPEED * path.length);
-    activeTimeouts.current.push(timeout1);
+    if (path.length) {
+      let timeout1 = setTimeout(() => {
+        notifyOptimalPath(algorithmId);
+      }, MAKE_PATH_SPEED * path.length);
+      activeTimeouts.current.push(timeout1);
+    }
 
     let timeout2 = setTimeout(() => {
       dispatch(setIsGridExplored(true));

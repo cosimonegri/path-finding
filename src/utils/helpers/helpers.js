@@ -63,3 +63,18 @@ export const clearExplorationVisually = (grid) => {
     }
   }
 };
+
+export const getToastStyle = (toastId, activeTime) => {
+  return {
+    toastId: toastId,
+    autoClose: activeTime,
+    position: "bottom-right",
+    theme: "colored",
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    pauseOnFocusLoss: false,
+  };
+};
