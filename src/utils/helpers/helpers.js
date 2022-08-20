@@ -4,6 +4,11 @@ export const swap = (array, idx1, idx2) => {
   [array[idx1], array[idx2]] = [array[idx2], array[idx1]];
 };
 
+export const makeEven = (num) => {
+  if (num % 2 === 0) return num;
+  return num - 1;
+};
+
 export const getCoordsObject = (row, col) => {
   return {
     row: row,

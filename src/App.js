@@ -29,7 +29,6 @@ import {
 // aggiungere link al profilo github
 
 // poter smuovere inizio e fine su smartphone
-// a volte start e end sono sulla riga sbagliata per fare i maze
 
 // migliorare transizione quando le dimensioni della grid cambiano
 // migliorare codice e css per scegliere il numero di righe e colonne
