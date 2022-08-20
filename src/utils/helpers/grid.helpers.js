@@ -53,7 +53,7 @@ export const getCellsList = (grid) => {
 export const hasWeights = (grid) => {
   for (let row of grid) {
     for (let cell of row) {
-      if (cell.isWeighted) return true;
+      if (cell.isWeight) return true;
     }
   }
   return false;
