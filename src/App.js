@@ -23,15 +23,15 @@ import {
   clearAllTimeouts,
 } from "utils/helpers/helpers";
 
-// aggiungere link al profilo github
+// aggiungere info su lunghezza path
+// fare schede tutorial / aggiugnere informazioni
 
 // poter smuovere inizio e fine su smartphone
 
 // su schermi piccoli le celle sono più piccole
-// migliorare transizione quando le dimensioni della grid cambiano
 // migliorare codice e css per scegliere il numero di righe e colonne
-
-// fare schede tutorial / aggiugnere informazioni
+// migliorare transizione quando le dimensioni della grid cambiano
+// la notifica della grid resize potrebbe non funzionare in modo ottimale
 
 // a-star: usare priority queue
 // migliori funzioni per ottenere numero pari e dispari
@@ -86,7 +86,7 @@ const App = () => {
       toast.warning("The grid has been resized", {
         toastId: toastId,
         autoClose: activeTime,
-        position: "top-right",
+        position: "bottom-right",
         theme: "colored",
         hideProgressBar: false,
         closeOnClick: true,
@@ -99,6 +99,14 @@ const App = () => {
       toast.update(toastId, { autoClose: activeTime });
     }
   };
+
+  const handleUpdateDevice = () => {
+    setTimeout(() => dispatch(updateDevice()), 10);
+  };
+
+  useEffect(() => {
+    handleUpdateDevice();
+  }, [width, height]);
 
   const handleResizeGrid = () => {
     notifyGridResize();
@@ -117,10 +125,6 @@ const App = () => {
     }
   };
 
-  const handleUpdateDevice = () => {
-    setTimeout(() => dispatch(updateDevice()), 10);
-  };
-
   useEffect(
     () => {
       handleResizeGrid();
@@ -128,9 +132,16 @@ const App = () => {
     isMobile ? [isMobile, orientation] : [width, height]
   );
 
+  const handlePageReload = () => {
+    initialRender.current = true;
+  };
+
   useEffect(() => {
-    handleUpdateDevice();
-  }, [width, height]);
+    window.addEventListener("beforeunload", handlePageReload);
+    return () => {
+      window.removeEventListener("beforeunload", handlePageReload);
+    };
+  }, []);
 
   return (
     <>

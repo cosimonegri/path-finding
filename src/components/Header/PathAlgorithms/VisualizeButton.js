@@ -50,7 +50,7 @@ const VisualizeButton = ({
       toast.error("This algorithm cannot be used with weights", {
         toastId: toastId,
         autoClose: activeTime,
-        position: "top-right",
+        position: "bottom-right",
         theme: "colored",
         hideProgressBar: false,
         closeOnClick: true,
