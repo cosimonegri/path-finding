@@ -42,6 +42,10 @@ const VisualizeButton = ({
     return id === 4 || id === 5 || id === 6;
   };
 
+  const pathAlgorithmIsOptimal = (id) => {
+    return id === 1 || id === 2 || id === 4 || id === 6;
+  };
+
   const notifyPathAlgorithmError = () => {
     const toastId = "algorithmError";
     const activeTime = 3000;
@@ -61,6 +65,54 @@ const VisualizeButton = ({
       });
     } else {
       toast.update(toastId, { autoClose: activeTime });
+    }
+  };
+
+  const notifyPathFound = (pathLength) => {
+    const text = "Found path of length " + pathLength;
+    const toastId = "pathFound";
+    const activeTime = 3000;
+
+    if (!toast.isActive(toastId)) {
+      toast.success(text, {
+        toastId: toastId,
+        autoClose: activeTime,
+        position: "bottom-right",
+        theme: "colored",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        pauseOnFocusLoss: false,
+      });
+    } else {
+      toast.update(toastId, { render: text, autoClose: activeTime });
+    }
+  };
+
+  const notifyOptimalPath = (algorithmId) => {
+    const text = pathAlgorithmIsOptimal(algorithmId)
+      ? "The path is optimal"
+      : "The path might not be optimal";
+    const toastId = "optimalPath";
+    const activeTime = 3000;
+
+    if (!toast.isActive(toastId)) {
+      toast.success(text, {
+        toastId: toastId,
+        autoClose: activeTime,
+        position: "bottom-right",
+        theme: "colored",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        pauseOnFocusLoss: false,
+      });
+    } else {
+      toast.update(toastId, { render: text, autoClose: activeTime });
     }
   };
 
@@ -96,6 +148,8 @@ const VisualizeButton = ({
   };
 
   const animatePath = (path) => {
+    notifyPathFound(path.length);
+
     for (let [i, cell] of path.entries()) {
       let timeout = setTimeout(() => {
         makePathVisually(cell);
@@ -103,11 +157,16 @@ const VisualizeButton = ({
       activeTimeouts.current.push(timeout);
     }
 
-    let timeout = setTimeout(() => {
+    let timeout1 = setTimeout(() => {
+      notifyOptimalPath(algorithmId);
+    }, MAKE_PATH_SPEED * path.length);
+    activeTimeouts.current.push(timeout1);
+
+    let timeout2 = setTimeout(() => {
       dispatch(setIsGridExplored(true));
       dispatch(setBlockClick(false));
     }, MAKE_PATH_SPEED * path.length + PATH_ANIMATION_DURATION);
-    activeTimeouts.current.push(timeout);
+    activeTimeouts.current.push(timeout2);
   };
 
   return (
