@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
+import { BsGithub } from "react-icons/bs";
+
 import { setIsGridExplored, clearGridWallsAndWeights } from "redux/grid.slice";
 import { setBlockClick } from "redux/interactions.slice";
 
@@ -31,10 +33,18 @@ const Header = ({ getExplorationData, activeTimeouts }) => {
     dispatch(clearGridWallsAndWeights());
   };
 
+  const redirectOnGithub = () => {
+    window.location.href =
+      "https://github.com/cosimonegri/pathfinding-visualizer";
+  };
+
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Container fluid className="mx-3 py-2">
-        <Navbar.Brand>Pathfinding Visualizer</Navbar.Brand>
+        <Navbar.Brand className="d-flex align-items-center">
+          <span style={{ paddingRight: "8px" }}>Pathfinding Visualizer</span>
+          <BsGithub style={{ cursor: "pointer" }} onClick={redirectOnGithub} />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
