@@ -99,7 +99,7 @@ const VisualizeButton = ({
     const activeTime = 3000;
 
     if (!toast.isActive(toastId)) {
-      toast.success(text, {
+      toast.info(text, {
         toastId: toastId,
         autoClose: activeTime,
         position: "bottom-right",
