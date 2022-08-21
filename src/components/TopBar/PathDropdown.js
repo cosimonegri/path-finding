@@ -11,7 +11,7 @@ const PathDropdown = () => {
 
   return (
     <Dropdown className="mx-2" as={NavItem}>
-      <Dropdown.Toggle as={NavLink}>Algorithms</Dropdown.Toggle>
+      <Dropdown.Toggle as={NavLink}>Path Algorithms</Dropdown.Toggle>
       <Dropdown.Menu variant="dark">
         {[...Array(6).keys()].map((i) => {
           return (

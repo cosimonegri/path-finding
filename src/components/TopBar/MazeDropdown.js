@@ -85,7 +85,7 @@ const MazeDropdown = ({ clearGrid, clearExploration, activeTimeouts }) => {
 
   return (
     <Dropdown className="mx-2" as={NavItem}>
-      <Dropdown.Toggle as={NavLink}>Mazes</Dropdown.Toggle>
+      <Dropdown.Toggle as={NavLink}>Maze Algorithms</Dropdown.Toggle>
       <Dropdown.Menu variant="dark">
         {[...Array(5).keys()].map((i) => {
           return (
