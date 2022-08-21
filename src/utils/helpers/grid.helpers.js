@@ -59,6 +59,34 @@ export const hasWeights = (grid) => {
   return false;
 };
 
+export const getRowsNum = (heightWidth) => {
+  if (heightWidth < 220) {
+    return 3;
+  } else if (heightWidth < 272) {
+    return 5;
+  } else if (heightWidth < 324) {
+    return 7;
+  } else if (heightWidth < 376) {
+    return 9;
+  } else if (heightWidth < 428) {
+    return 11;
+  } else if (heightWidth < 480) {
+    return 13;
+  } else if (heightWidth < 532) {
+    return 15;
+  } else if (heightWidth < 584) {
+    return 17;
+  } else if (heightWidth < 636) {
+    return 19;
+  } else if (heightWidth < 688) {
+    return 21;
+  } else if (heightWidth < 740) {
+    return 23;
+  } else {
+    return 25;
+  }
+};
+
 export const getColsNum = (screenWidth) => {
   if (screenWidth < 160) {
     return 3;
@@ -114,33 +142,5 @@ export const getColsNum = (screenWidth) => {
     return 53;
   } else {
     return 55;
-  }
-};
-
-export const getRowsNum = (heightWidth) => {
-  if (heightWidth < 220) {
-    return 3;
-  } else if (heightWidth < 272) {
-    return 5;
-  } else if (heightWidth < 324) {
-    return 7;
-  } else if (heightWidth < 376) {
-    return 9;
-  } else if (heightWidth < 428) {
-    return 11;
-  } else if (heightWidth < 480) {
-    return 13;
-  } else if (heightWidth < 532) {
-    return 15;
-  } else if (heightWidth < 584) {
-    return 17;
-  } else if (heightWidth < 636) {
-    return 19;
-  } else if (heightWidth < 688) {
-    return 21;
-  } else if (heightWidth < 740) {
-    return 23;
-  } else {
-    return 25;
   }
 };
