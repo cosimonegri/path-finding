@@ -11,6 +11,7 @@ import {
   makePathVisually,
 } from "utils/helpers/cell.helpers";
 import { hasWeights } from "utils/helpers/grid.helpers";
+import { getPathLength } from "utils/helpers/path.helpers";
 import { getToastStyle } from "utils/helpers/helpers";
 
 import { PATH_ALGORITHMS_SHORT } from "utils/constants/ids.constants";
@@ -59,9 +60,10 @@ const VisualizeButton = ({
     }
   };
 
-  const notifyPathFound = (pathLength) => {
+  const notifyPathFound = (path) => {
+    const pathLength = getPathLength(path, startCoords, endCoords);
     const text = pathLength
-      ? "Found path of length " + (pathLength - 1)
+      ? "Found path of length " + pathLength
       : "No path found";
     const toastId = "pathFound";
     const activeTime = 3000;
@@ -83,9 +85,10 @@ const VisualizeButton = ({
       : "The path length might not be optimal";
     const toastId = "optimalPath";
     const activeTime = 3000;
+    const delay = 1000;
 
     if (!toast.isActive(toastId)) {
-      toast.info(text, getToastStyle(toastId, activeTime));
+      toast.info(text, getToastStyle(toastId, activeTime, delay));
     } else {
       toast.update(toastId, { render: text, autoClose: activeTime });
     }
@@ -117,26 +120,21 @@ const VisualizeButton = ({
     }
 
     let timeout = setTimeout(() => {
+      notifyPathFound(path);
+      if (path.length) {
+        notifyOptimalPath(algorithmId);
+      }
       animatePath(path);
     }, MAKE_VISITED_SPEED * visitedCellsInOrder.length); //! + VISITED_ANIMATION_DURATION ???
     activeTimeouts.current.push(timeout);
   };
 
   const animatePath = (path) => {
-    notifyPathFound(path.length);
-
     for (let [i, cell] of path.entries()) {
       let timeout = setTimeout(() => {
         makePathVisually(cell);
       }, MAKE_PATH_SPEED * i);
       activeTimeouts.current.push(timeout);
-    }
-
-    if (path.length) {
-      let timeout1 = setTimeout(() => {
-        notifyOptimalPath(algorithmId);
-      }, MAKE_PATH_SPEED * path.length);
-      activeTimeouts.current.push(timeout1);
     }
 
     let timeout2 = setTimeout(() => {

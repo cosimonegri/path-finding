@@ -2,22 +2,21 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
-import { BsGithub } from "react-icons/bs";
-
 import { setIsGridExplored, clearGridWallsAndWeights } from "redux/grid.slice";
 import { setBlockClick } from "redux/interactions.slice";
 
-import VisualizeButton from "components/Header/PathAlgorithms/VisualizeButton";
-import PathDropdown from "components/Header/PathAlgorithms/PathDropdown";
-import MazeDropdown from "components/Header/MazeDropdown";
-import InstrumentDropdown from "components/Header/InstrumentDropdown";
+import Title from "components/TopBar/Title";
+import VisualizeButton from "components/TopBar/VisualizeButton";
+import PathDropdown from "components/TopBar/PathDropdown";
+import MazeDropdown from "components/TopBar/MazeDropdown";
+import InstrumentDropdown from "components/TopBar/InstrumentDropdown";
 
 import {
   clearExplorationVisually,
   clearAllTimeouts,
 } from "utils/helpers/helpers";
 
-const Header = ({ getExplorationData, activeTimeouts }) => {
+const TopBar = ({ getExplorationData, activeTimeouts }) => {
   const dispatch = useDispatch();
   const grid = useSelector((state) => state.grid.grid);
 
@@ -33,18 +32,10 @@ const Header = ({ getExplorationData, activeTimeouts }) => {
     dispatch(clearGridWallsAndWeights());
   };
 
-  const redirectOnGithub = () => {
-    window.location.href =
-      "https://github.com/cosimonegri/pathfinding-visualizer";
-  };
-
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Container fluid className="mx-3 py-2">
-        <Navbar.Brand className="d-flex align-items-center">
-          <span style={{ paddingRight: "8px" }}>Pathfinding Visualizer</span>
-          <BsGithub style={{ cursor: "pointer" }} onClick={redirectOnGithub} />
-        </Navbar.Brand>
+        <Title />
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
@@ -73,4 +64,4 @@ const Header = ({ getExplorationData, activeTimeouts }) => {
   );
 };
 
-export default Header;
+export default TopBar;
