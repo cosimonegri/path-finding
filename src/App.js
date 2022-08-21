@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
-import Header from "components/Header/Header";
+import TopBar from "components/TopBar";
 import Grid from "components/Grid/Grid";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
@@ -21,12 +21,14 @@ import { getRowsNum, getColsNum } from "utils/helpers/grid.helpers";
 import {
   clearExplorationVisually,
   clearAllTimeouts,
+  getToastStyle,
 } from "utils/helpers/helpers";
 
-// fare schede tutorial ???
+// fare schede tutorial
 // refactoring ultimo codice scritto ???
 
 // poter smuovere inizio e fine su smartphone
+// migliore topbar su smartphone
 
 // su schermi piccoli le celle sono più piccole
 // refactoring codice e css per scegliere il numero di righe e colonne
@@ -74,32 +76,6 @@ const App = () => {
     return [visitedCellsInOrder, path];
   };
 
-  const notifyGridResize = () => {
-    if (initialRender.current) {
-      initialRender.current = false;
-      return;
-    }
-    const toastId = "gridResize";
-    const activeTime = 2000;
-
-    if (!toast.isActive(toastId)) {
-      toast.warning("The grid has been resized", {
-        toastId: toastId,
-        autoClose: activeTime,
-        position: "bottom-right",
-        theme: "colored",
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        pauseOnFocusLoss: false,
-      });
-    } else {
-      toast.update(toastId, { autoClose: activeTime });
-    }
-  };
-
   const handleUpdateDevice = () => {
     setTimeout(() => dispatch(updateDevice()), 10);
   };
@@ -108,8 +84,23 @@ const App = () => {
     handleUpdateDevice();
   }, [width, height]);
 
+  const notifyResizeGrid = () => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+    const text = "The grid has been resized";
+    const toastId = "resizeGrid";
+    const activeTime = 2000;
+
+    if (!toast.isActive(toastId)) {
+      toast.warning(text, getToastStyle(toastId, activeTime));
+    } else {
+      toast.update(toastId, { autoClose: activeTime });
+    }
+  };
+
   const handleResizeGrid = () => {
-    notifyGridResize();
     const newRowsNum = getRowsNum(height);
     const newColsNum = getColsNum(width);
 
@@ -127,6 +118,7 @@ const App = () => {
 
   useEffect(
     () => {
+      notifyResizeGrid();
       handleResizeGrid();
     },
     isMobile ? [isMobile, orientation] : [width, height]
@@ -145,7 +137,7 @@ const App = () => {
 
   return (
     <>
-      <Header
+      <TopBar
         getExplorationData={getExplorationData}
         activeTimeouts={activeTimeouts}
       />
