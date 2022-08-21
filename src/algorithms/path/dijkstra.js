@@ -1,4 +1,3 @@
-import { WEIGHT } from "utils/constants/constants";
 import { enqueue, dequeue } from "utils/helpers/heap.helpers";
 import {
   isEnd,
@@ -6,10 +5,9 @@ import {
   compareCoords,
   getValidNeighbors,
   isOnlyWall,
-  isOnlyWeight,
 } from "utils/helpers/cell.helpers";
 import { getExplorationGrid } from "utils/helpers/grid.helpers";
-import { getPath } from "utils/helpers/helpers";
+import { getEdgeWeight, getPath } from "utils/helpers/path.helpers";
 
 const dijkstra = (grid, startCoords, endCoords) => {
   const [startRow, startCol] = getCoords(startCoords);
@@ -37,13 +35,8 @@ const dijkstra = (grid, startCoords, endCoords) => {
       if (neighbor.visited || isOnlyWall(neighbor, startCoords, endCoords))
         continue;
 
-      const isEdgeWeighted =
-        isOnlyWeight(cell, startCoords, endCoords) ||
-        isOnlyWeight(neighbor, startCoords, endCoords);
-
-      const newDistance = isEdgeWeighted
-        ? cell.distance + WEIGHT
-        : cell.distance + 1;
+      const edgeWeight = getEdgeWeight(neighbor, startCoords, endCoords);
+      const newDistance = cell.distance + edgeWeight;
 
       if (newDistance < neighbor.distance) {
         neighbor.distance = newDistance;

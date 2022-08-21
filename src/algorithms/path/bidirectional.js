@@ -3,9 +3,8 @@ import {
   getValidNeighbors,
   isOnlyWall,
 } from "utils/helpers/cell.helpers";
-
 import { getExplorationGrid } from "utils/helpers/grid.helpers";
-import { getPathFromBidirectional } from "utils/helpers/helpers";
+import { getPathFromBidirectional } from "utils/helpers/path.helpers";
 
 const bidireactional = (grid, startCoords, endCoords) => {
   const [startRow, startCol] = getCoords(startCoords);
@@ -67,10 +66,7 @@ const bidireactional = (grid, startCoords, endCoords) => {
     }
   }
 
-  const path = midCell
-    ? getPathFromBidirectional(newGrid, midCell.row, midCell.col)
-    : [];
-
+  const path = getPathFromBidirectional(newGrid, midCell);
   return [visitedCellsInOrder, path];
 };
 

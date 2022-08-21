@@ -1,12 +1,11 @@
 import {
+  isEnd,
   getCoords,
   getValidNeighbors,
   isOnlyWall,
 } from "utils/helpers/cell.helpers";
-
-import { isEnd } from "utils/helpers/cell.helpers";
 import { getExplorationGrid } from "utils/helpers/grid.helpers";
-import { getPath } from "utils/helpers/helpers";
+import { getPath } from "utils/helpers/path.helpers";
 
 const dfs = (grid, startCoords, endCoords) => {
   const [startRow, startCol] = getCoords(startCoords);
