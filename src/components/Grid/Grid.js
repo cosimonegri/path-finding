@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import Cell from "components/Cell/Cell";
+import Cell from "components/Grid/Cell";
 
 import {
   moveStart,

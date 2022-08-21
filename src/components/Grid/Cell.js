@@ -14,7 +14,7 @@ import {
 } from "utils/helpers/cell.helpers";
 
 import { ICON_COLOR } from "utils/constants/constants";
-import styles from "components/Cell/cell.module.css";
+import styles from "components/Grid/cell.module.css";
 
 const Cell = ({ cell, handleMouseDown, handleMouseEnter }) => {
   const startCoords = useSelector((state) => state.grid.startCoords);
