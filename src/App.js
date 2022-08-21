@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
 import TopBar from "components/TopBar";
-import Grid from "components/Grid/Grid";
+import Grid from "components/Grid";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
 import { updateDevice } from "redux/device.slice";
@@ -25,6 +25,7 @@ import {
 } from "utils/helpers/helpers";
 
 // fare schede tutorial
+// più righe e colonne per gli schermi più grandi
 // refactoring ultimo codice scritto ???
 
 // poter smuovere inizio e fine su smartphone
@@ -105,12 +106,14 @@ const App = () => {
     const newColsNum = getColsNum(width);
 
     if (newRowsNum !== rowsNum || newColsNum !== colsNum) {
+      dispatch(setBlockClick(true));
+
       clearAllTimeouts(activeTimeouts.current);
       clearExplorationVisually(grid);
+
       dispatch(
         changeGridDimensions({ rowsNum: newRowsNum, colsNum: newColsNum })
       );
-
       dispatch(setIsGridExplored(false));
       dispatch(setBlockClick(false));
     }

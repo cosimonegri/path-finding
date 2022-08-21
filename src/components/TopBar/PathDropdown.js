@@ -10,8 +10,8 @@ const PathDropdown = () => {
   const dispatch = useDispatch();
 
   return (
-    <Dropdown className="mx-2" as={NavItem}>
-      <Dropdown.Toggle as={NavLink}>Path Algorithms</Dropdown.Toggle>
+    <Dropdown as={NavItem}>
+      <Dropdown.Toggle as={NavLink}>Algorithms</Dropdown.Toggle>
       <Dropdown.Menu variant="dark">
         {[...Array(6).keys()].map((i) => {
           return (

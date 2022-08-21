@@ -11,7 +11,7 @@ const InstrumentDropdown = () => {
   const instrumentId = useSelector((state) => state.interactions.instrumentId);
 
   return (
-    <Dropdown className="mx-2" as={NavItem}>
+    <Dropdown as={NavItem}>
       <Dropdown.Toggle as={NavLink}>
         {INSTRUMENTS[instrumentId]}
       </Dropdown.Toggle>

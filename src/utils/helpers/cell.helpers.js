@@ -1,7 +1,6 @@
 import { getDistance } from "utils/helpers/helpers";
 import { CELL_SIZE_WITH_OUTLINE } from "utils/constants/constants";
-
-import cellStyles from "components/Cell/cell.module.css";
+import cellStyles from "components/Grid/cell.module.css";
 
 export const createCell = (row, col) => {
   return {

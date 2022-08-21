@@ -145,11 +145,7 @@ const VisualizeButton = ({
   };
 
   return (
-    <Nav.Link
-      className="mx-2"
-      onClick={handleStartAlgorithm}
-      disabled={!algorithmId}
-    >
+    <Nav.Link onClick={handleStartAlgorithm} disabled={!algorithmId}>
       {getButtonName(algorithmId)}
     </Nav.Link>
   );
