@@ -12,7 +12,7 @@ You can visit the page [here](https://pathfinding-visualization-tool.netlify.app
 
 - Dijkstra's Algorithm
 - A\* Search
-- Best-First Search
+- Greedy Best-First Search
 - Depth-First Search (DFS)
 - Breadth-First Search (BFS)
 - Bidirectional BFS
