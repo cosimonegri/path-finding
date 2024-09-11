@@ -2,7 +2,7 @@
 
 <!--- foto e forse badges --->
 
-A React App that gives you the change of visualizing the execution of the most common pathfinding and maze generation algorithms in an intuitive and entertaining way.
+A React App that shows the execution of the most common pathfinding and maze generation algorithms in an intuitive and entertaining way.
 
 You can visit the page [here](https://pathfinding-visualization-tool.netlify.app)
 
